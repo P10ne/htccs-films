@@ -1,0 +1,9 @@
+<header class="header">
+  <nav class="nav">
+    <ul class="nav-list">
+      <li *ngFor="let item of navLinks" class="nav__item">
+        <a [routerLink]="item.link">{{item.text}}</a>
+      </li>
+    </ul>
+  </nav>
+</header>
