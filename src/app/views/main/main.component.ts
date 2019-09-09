@@ -9,7 +9,7 @@ import {FilmsLoaderService} from '../../services/films-loader.service';
 })
 export class MainComponent implements OnInit {
   searchTitle = '';
-  searchResult: IFilmListItemData[] = [];
+  searchResult: IFilmDataShort[] = [];
   constructor() {
     this.searchTitle = '';
     this.searchResult = [];
@@ -31,7 +31,7 @@ export class MainComponent implements OnInit {
       .catch(error => console.error(error));
   }
 
-  getParsedSearchResult(dataJSON): IFilmListItemData[] {
+  getParsedSearchResult(dataJSON): IFilmDataShort[] {
     const dataJS = dataJSON;
     return [{
       imdbId: dataJS.imdbID,

@@ -9,8 +9,8 @@ export class LocStorageService {
     favorites: 'favorites'
   }
 
-  private currentViewedFilms: IFilmListItemData[] = JSON.parse(localStorage.getItem(LocStorageService.LSKeys.viewed) || '[]');
-  private currentFavoritesFilms: IFilmListItemData[] = JSON.parse(localStorage.getItem(LocStorageService.LSKeys.favorites) || '[]');
+  private currentViewedFilms: IFilmDataShort[] = JSON.parse(localStorage.getItem(LocStorageService.LSKeys.viewed) || '[]');
+  private currentFavoritesFilms: IFilmDataShort[] = JSON.parse(localStorage.getItem(LocStorageService.LSKeys.favorites) || '[]');
 
   getCurrentViewedFilms() {
     return this.updateCurrentViewedFilms();
@@ -38,17 +38,17 @@ export class LocStorageService {
     return this.currentFavoritesFilms.length > 0;
   }
 
-  existInViewed(film: IFilmListItemData): boolean {
+  existInViewed(film: IFilmDataShort): boolean {
     return this.currentViewedFilms.find((item) => item.imdbId === film.imdbId) ?
       true : false;
   }
 
-  existInFavorites(film: IFilmListItemData): boolean {
+  existInFavorites(film: IFilmDataShort): boolean {
     return this.currentFavoritesFilms.find((item) => item.imdbId === film.imdbId) ?
       true : false;
   }
 
-  addToViewed(film: IFilmListItemData): void {
+  addToViewed(film: IFilmDataShort): void {
     if (!this.existInViewed(film)) {
       const newViewedFilms: object[] = this.currentViewedFilms;
       newViewedFilms.push(film);
@@ -60,9 +60,9 @@ export class LocStorageService {
     }
   }
 
-  addToFavorites(film: IFilmListItemData): void {
+  addToFavorites(film: IFilmDataShort): void {
     if (!this.existInFavorites(film)) {
-      const newFavoritesFilms: object[] = this.currentFavoritesFilms;
+      const newFavoritesFilms: IFilmDataShort[] = this.currentFavoritesFilms;
       newFavoritesFilms.push(film);
       localStorage.setItem(LocStorageService.LSKeys.favorites, JSON.stringify(newFavoritesFilms));
       this.currentFavoritesFilms.push(film);
@@ -70,5 +70,17 @@ export class LocStorageService {
     } else {
       console.error('Фильм уже есть в просмотренных');
     }
+  }
+
+  deleteFromViewed(film: IFilmDataShort): void {
+    const toDeleteIndex = this.currentViewedFilms.findIndex((item) => item.imdbId === film.imdbId);
+    this.currentViewedFilms.splice(toDeleteIndex, 1);
+    localStorage.setItem(LocStorageService.LSKeys.viewed, JSON.stringify(this.currentViewedFilms));
+  }
+
+  deleteFromFavorites(film: IFilmDataShort): void {
+    const toDeleteIndex = this.currentFavoritesFilms.findIndex((item) => item.imdbId === film.imdbId);
+    this.currentFavoritesFilms.splice(toDeleteIndex, 1);
+    localStorage.setItem(LocStorageService.LSKeys.favorites, JSON.stringify(this.currentFavoritesFilms));
   }
 }

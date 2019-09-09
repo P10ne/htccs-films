@@ -4,11 +4,10 @@ import {LocStorageService} from '../../services/loc-storage.service';
 @Component({
   selector: 'app-viewed',
   templateUrl: './viewed.component.html',
-  styleUrls: ['./viewed.component.scss'],
-  providers: [LocStorageService]
+  styleUrls: ['./viewed.component.scss']
 })
 export class ViewedComponent implements OnInit {
-  viewedFilms: IFilmListItemData[];
+  viewedFilms: IFilmDataShort[];
 
   constructor(private locStorage: LocStorageService) {
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {FilmsLoaderService} from '../../services/films-loader.service';
 
 @Component({
   selector: 'app-film-page',
@@ -8,14 +9,32 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./film-page.component.scss']
 })
 export class FilmPageComponent implements OnInit {
-
   id: string;
   subscription: Subscription;
-  constructor(private activateRoute: ActivatedRoute) {
+  filmData: IFilmDataFull;
+  constructor(private activateRoute: ActivatedRoute, private filmsLoader: FilmsLoaderService) {
     this.subscription = activateRoute.params.subscribe(params => this.id = params.id);
   }
 
   ngOnInit() {
+    this.filmsLoader.getFilmById(this.id)
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+        this.filmData = this.getParsedSearchResult(result);
+      });
+  }
+
+  getParsedSearchResult(dataJSON): IFilmDataFull {
+    const dataJS = dataJSON;
+    return {
+      imdbId: dataJS.imdbID,
+      title: dataJS.Title,
+      released: dataJS.Released,
+      poster: dataJS.Poster,
+      plot: dataJS.Plot,
+      actors: dataJS.Actors
+    };
   }
 
 }

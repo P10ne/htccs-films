@@ -7,7 +7,7 @@ import {LocStorageService} from '../../services/loc-storage.service';
   styleUrls: ['./saved.component.scss']
 })
 export class SavedComponent implements OnInit {
-  favoritesFilms: IFilmListItemData[];
+  favoritesFilms: IFilmDataShort[];
 
   constructor(private locStorage: LocStorageService) { }
 

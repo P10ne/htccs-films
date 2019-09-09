@@ -8,7 +8,12 @@ export class FilmsLoaderService {
   constructor() { }
 
   getFilmsByTitle(title: string): any {
-    const currentTitle = `${this.url}&t=${title}`;
-    return fetch(currentTitle);
+    const url = `${this.url}&t=${title}`;
+    return fetch(url);
+  }
+
+  getFilmById(id: string): any {
+    const url = `${this.url}&i=${id}`;
+    return fetch(url);
   }
 }

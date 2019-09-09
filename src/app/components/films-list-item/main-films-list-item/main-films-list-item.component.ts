@@ -1,16 +1,18 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {LocStorageService} from '../../services/loc-storage.service';
+import {LocStorageService} from '../../../services/loc-storage.service';
+import {FilmsListItem} from '../films-list-item';
 
 @Component({
   selector: 'app-films-list-item',
-  templateUrl: './films-list-item.component.html',
-  styleUrls: ['./films-list-item.component.scss'],
+  templateUrl: './main-films-list-item.component.html',
+  styleUrls: ['./main-films-list-item.component.scss'],
   providers: [LocStorageService]
 })
-export class FilmsListItemComponent {
-  @Input() FilmItemData: IFilmListItemData;
+export class MainFilmsListItemComponent extends FilmsListItem {
 
-  constructor(private locStorage: LocStorageService) {}
+  constructor(private locStorage: LocStorageService) {
+    super();
+  }
 
   addToViewed() {
     this.locStorage.addToViewed(this.FilmItemData);

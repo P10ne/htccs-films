@@ -10,9 +10,10 @@ import { HeaderComponent } from './components/header/header.component';
 import { LayoutComponent } from './layouts/layout/layout.component';
 import { ViewedComponent } from './views/viewed/viewed.component';
 import {FormsModule} from '@angular/forms';
-import { FilmsListItemComponent } from './components/films-list-item/films-list-item.component';
-import {LocStorageService} from './services/loc-storage.service';
+import { MainFilmsListItemComponent } from './components/films-list-item/main-films-list-item/main-films-list-item.component';
 import { FilmPageComponent } from './views/film-page/film-page.component';
+import { ViewedFilmsListItemComponent } from './components/films-list-item/viewed-films-list-item/viewed-films-list-item.component';
+import { FavoritesFilmsListItemComponent } from './components/films-list-item/favorites-films-list-item/favorites-films-list-item.component';
 
 @NgModule({
   declarations: [
@@ -23,8 +24,10 @@ import { FilmPageComponent } from './views/film-page/film-page.component';
     HeaderComponent,
     LayoutComponent,
     ViewedComponent,
-    FilmsListItemComponent,
-    FilmPageComponent
+    MainFilmsListItemComponent,
+    FilmPageComponent,
+    ViewedFilmsListItemComponent,
+    FavoritesFilmsListItemComponent
   ],
   imports: [
     BrowserModule,

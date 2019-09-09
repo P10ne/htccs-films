@@ -1,1 +1,21 @@
-<p>{{id}}</p>
+<div *ngIf="filmData" class="container">
+  <div class="row">
+    <img [attr.src]="filmData.poster">
+    <div class="col">
+      <h1>{{filmData.title}}</h1>
+      <div class="row">
+        <div class="col-auto">
+          <p>Дата выпуска: </p>
+          <p>Актеры: </p>
+        </div>
+        <div class="col-auto">
+          <p>{{filmData.released}}</p>
+          <p>{{filmData.actors}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">{{filmData.plot}}</div>
+
+      </div>
+    </div>
+</div>
