@@ -9,6 +9,10 @@ import { NotFoundComponent } from './views/not-found/not-found.component';
 import { HeaderComponent } from './components/header/header.component';
 import { LayoutComponent } from './layouts/layout/layout.component';
 import { ViewedComponent } from './views/viewed/viewed.component';
+import {FormsModule} from '@angular/forms';
+import { FilmsListItemComponent } from './components/films-list-item/films-list-item.component';
+import {LocStorageService} from './services/loc-storage.service';
+import { FilmPageComponent } from './views/film-page/film-page.component';
 
 @NgModule({
   declarations: [
@@ -18,11 +22,14 @@ import { ViewedComponent } from './views/viewed/viewed.component';
     NotFoundComponent,
     HeaderComponent,
     LayoutComponent,
-    ViewedComponent
+    ViewedComponent,
+    FilmsListItemComponent,
+    FilmPageComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

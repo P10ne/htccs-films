@@ -1,1 +1,10 @@
-<p>main works!</p>
+<div class="container container-fluid">
+  <div class="form-group d-flex">
+    <input type="text" [(ngModel)]="searchTitle" class="form-control flex-grow-1" id="usr">
+    <button type="button" class="btn" (click)="searchClickHandler()">Найти</button>
+  </div>
+</div>
+<div class="container" *ngIf="hasSearchResult()">
+  <h2>Результаты поиска</h2>
+  <app-films-list-item *ngFor="let item of searchResult" [FilmItemData]="item"></app-films-list-item>
+</div>

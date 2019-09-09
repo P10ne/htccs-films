@@ -1,1 +1,5 @@
-<p>viewed works!</p>
+<div class="container">
+  <h2>Просмотренные фильмы</h2>
+  <app-films-list-item *ngFor="let item of viewedFilms" [FilmItemData]="item"></app-films-list-item>
+  <p *ngIf="!hasViewedFilms()">Нет просмотренных фильмов</p>
+</div>

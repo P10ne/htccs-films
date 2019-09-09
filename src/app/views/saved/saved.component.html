@@ -1,1 +1,5 @@
-<p>saved works!</p>
+<div class="container">
+  <h2>Сохраненные фильмы</h2>
+  <app-films-list-item *ngFor="let item of favoritesFilms" [FilmItemData]="item"></app-films-list-item>
+  <p *ngIf="!hasFavoritesFilms()">Нет сохраненных фильмов</p>
+</div>
