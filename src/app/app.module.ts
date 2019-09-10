@@ -14,6 +14,7 @@ import { MainFilmsListItemComponent } from './components/films-list-item/main-fi
 import { FilmPageComponent } from './views/film-page/film-page.component';
 import { ViewedFilmsListItemComponent } from './components/films-list-item/viewed-films-list-item/viewed-films-list-item.component';
 import { FavoritesFilmsListItemComponent } from './components/films-list-item/favorites-films-list-item/favorites-films-list-item.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { FavoritesFilmsListItemComponent } from './components/films-list-item/fa
     MainFilmsListItemComponent,
     FilmPageComponent,
     ViewedFilmsListItemComponent,
-    FavoritesFilmsListItemComponent
+    FavoritesFilmsListItemComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

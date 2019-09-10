@@ -1,0 +1,5 @@
+<ul class="pagination" (click)="pageChangedHandler($event)">
+  <li class="page-item" [class.disabled]="currentPage === 1"><button class="page-link" href="#" [attr.data-pageto]="currentPage - 1">Предыдущая</button></li>
+  <li *ngFor="let item of visiblePages" class="page-item" [class.active]="currentPage === item"><button class="page-link" href="#" [attr.data-pageto]="item">{{item}}</button></li>
+  <li class="page-item" [class.disabled]="currentPage === maxPageNumber"><button class="page-link" href="#" [attr.data-pageto]="currentPage + 1">Следующая</button></li>
+</ul>

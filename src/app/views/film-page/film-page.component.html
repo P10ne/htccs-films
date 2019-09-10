@@ -1,5 +1,8 @@
-<div *ngIf="filmData" class="container">
-  <div class="row">
+<div class="container">
+  <div class="row row--mg">
+    <button (click)="goBack()" class="btn btn-primary">← Вернуться назад</button>
+  </div>
+  <div *ngIf="filmData; else loadBlock" class="row">
     <img [attr.src]="filmData.poster">
     <div class="col">
       <h1>{{filmData.title}}</h1>
@@ -15,7 +18,9 @@
       </div>
       <div class="row">
         <div class="col">{{filmData.plot}}</div>
-
       </div>
     </div>
 </div>
+
+
+<ng-template #loadBlock>Загрузка</ng-template>

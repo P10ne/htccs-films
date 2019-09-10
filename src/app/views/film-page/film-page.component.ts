@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {FilmsLoaderService} from '../../services/films-loader.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-film-page',
@@ -12,12 +13,14 @@ export class FilmPageComponent implements OnInit {
   id: string;
   subscription: Subscription;
   filmData: IFilmDataFull;
-  constructor(private activateRoute: ActivatedRoute, private filmsLoader: FilmsLoaderService) {
+  constructor(private activateRoute: ActivatedRoute,
+              private filmsLoader: FilmsLoaderService,
+              private location: Location) {
     this.subscription = activateRoute.params.subscribe(params => this.id = params.id);
   }
 
   ngOnInit() {
-    this.filmsLoader.getFilmById(this.id)
+    this.filmsLoader.getFilmById(this.id, FilmsLoaderService.plotType.full)
       .then(response => response.json())
       .then(result => {
         console.log(result);
@@ -35,6 +38,10 @@ export class FilmPageComponent implements OnInit {
       plot: dataJS.Plot,
       actors: dataJS.Actors
     };
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 }

@@ -1,7 +1,7 @@
 <div class="container container-fluid">
   <div class="form-group d-flex">
-    <input type="text" [(ngModel)]="searchTitle" class="form-control flex-grow-1" id="usr">
-    <button type="button" class="btn" (click)="searchClickHandler()">Найти</button>
+      <input type="text" [(ngModel)]="searchTitle" class="form-control flex-grow-1">
+      <button type="submit" class="btn" (click)="searchClickHandler()">Найти</button>
   </div>
 </div>
 <div class="container" *ngIf="hasSearchResult()">

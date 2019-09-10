@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FilmsListItem} from '../films-list-item';
 import {LocStorageService} from '../../../services/loc-storage.service';
+import {MediatorService} from '../../../services/mediator.service';
 
 @Component({
   selector: 'app-viewed-films-list-item',
@@ -8,11 +9,12 @@ import {LocStorageService} from '../../../services/loc-storage.service';
   styleUrls: ['./viewed-films-list-item.component.scss']
 })
 export class ViewedFilmsListItemComponent extends FilmsListItem {
-  constructor(private locStorage: LocStorageService) {
+  constructor(private locStorage: LocStorageService, private mediator: MediatorService) {
     super();
   }
 
   deleteFromViewed() {
     this.locStorage.deleteFromViewed(this.FilmItemData);
+    this.mediator.call(MediatorService.viewedFilmsChanged, null);
   }
 }

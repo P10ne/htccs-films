@@ -4,6 +4,10 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class FilmsLoaderService {
+  static plotType = {
+    short: 'short',
+    full: 'full'
+  }
   url = 'http://www.omdbapi.com/?apikey=a2149e33';
   constructor() { }
 
@@ -12,8 +16,8 @@ export class FilmsLoaderService {
     return fetch(url);
   }
 
-  getFilmById(id: string): any {
-    const url = `${this.url}&i=${id}`;
+  getFilmById(id: string, plot = FilmsLoaderService.plotType.short): any {
+    const url = `${this.url}&i=${id}&plot=${plot}`;
     return fetch(url);
   }
 }

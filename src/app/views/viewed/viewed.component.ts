@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {LocStorageService} from '../../services/loc-storage.service';
+import {MediatorService} from '../../services/mediator.service';
 
 @Component({
   selector: 'app-viewed',
@@ -8,9 +9,17 @@ import {LocStorageService} from '../../services/loc-storage.service';
 })
 export class ViewedComponent implements OnInit {
   viewedFilms: IFilmDataShort[];
+  filmsCountOnPage = 3;
+  filmsCount: number;
+  constructor(private locStorage: LocStorageService, private mediator: MediatorService) {
+      this.subscribe();
+  }
 
-  constructor(private locStorage: LocStorageService) {
-
+  subscribe() {
+    const self = this; // В отдельный метод
+    this.mediator.subscribe(MediatorService.viewedFilmsChanged, () => {
+        self.update();
+    });
   }
 
   hasViewedFilms() {
@@ -18,7 +27,17 @@ export class ViewedComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.viewedFilms = this.locStorage.getCurrentViewedFilms();
+    this.update();
+  }
+
+  update() {
+    this.viewedFilms = this.locStorage.getCurrentViewedFilmsForPage(1, this.filmsCountOnPage);
+    this.filmsCount = this.locStorage.getCurrentViewedFilms().length;
+  }
+
+  pageChangeHandler(selectedPage) {
+    console.log(`saved: ${selectedPage}`);
+    this.viewedFilms = this.locStorage.getCurrentViewedFilmsForPage(selectedPage, this.filmsCountOnPage);
   }
 
 }

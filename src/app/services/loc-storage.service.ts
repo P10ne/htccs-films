@@ -16,6 +16,14 @@ export class LocStorageService {
     return this.updateCurrentViewedFilms();
   }
 
+  getCurrentViewedFilmsForPage(page, count) {
+    return this.updateCurrentViewedFilms().slice((page - 1) * count, (page - 1) * count + count);
+  }
+
+  getCurrentFavoritesFilmsForPage(page, count) {
+    return this.updateCurrentFavoritesFilms().slice((page - 1) * count, (page - 1) * count + count);
+  }
+
   updateCurrentViewedFilms() {
     this.currentViewedFilms = JSON.parse(localStorage.getItem(LocStorageService.LSKeys.viewed) || '[]');
     return this.currentViewedFilms;
