@@ -11,8 +11,8 @@ export class FilmsLoaderService {
   url = 'http://www.omdbapi.com/?apikey=a2149e33';
   constructor() { }
 
-  getFilmsByTitle(title: string): any {
-    const url = `${this.url}&t=${title}`;
+  getFilmsBySearch(title: string): any {
+    const url = `${this.url}&s=${title}`;
     return fetch(url);
   }
 

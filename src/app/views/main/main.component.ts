@@ -7,37 +7,39 @@ import {FilmsLoaderService} from '../../services/films-loader.service';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent implements OnInit {
+export class MainComponent {
   searchTitle = '';
   searchResult: IFilmDataShort[] = [];
   constructor() {
-    this.searchTitle = '';
-    this.searchResult = [];
   }
 
-  ngOnInit() {
-  }
+  searchClickHandler(btn = null) {
+    if (!btn || btn && btn.code === 'Enter') { // Клик или enter
+      console.log(`Поиск фильма: ${this.searchTitle}`);
+      const filmsLoader = new FilmsLoaderService();
+      filmsLoader.getFilmsBySearch(this.searchTitle)
+        .then(response => response.json())
+        .then(result => {
+          console.log(result);
+          if (result.Error) { throw new Error(); }
+          this.searchResult = this.getParsedSearchResult(result.Search);
+        })
+        .catch(error => console.error(error));
+    }
 
-  searchClickHandler() {
-    console.log(`Поиск фильма: ${this.searchTitle}`);
-    const filmsLoader = new FilmsLoaderService();
-    filmsLoader.getFilmsByTitle(this.searchTitle)
-      .then(response => response.json())
-      .then(result => {
-        console.log(result);
-        if (result.Error) { throw new Error(); }
-        this.searchResult = this.getParsedSearchResult(result);
-      })
-      .catch(error => console.error(error));
   }
 
   getParsedSearchResult(dataJSON): IFilmDataShort[] {
     const dataJS = dataJSON;
-    return [{
-      imdbId: dataJS.imdbID,
-      title: dataJS.Title,
-      released: dataJS.Released
-    }];
+    const films: IFilmDataShort[] = [];
+    dataJS.forEach((item) => {
+      films.push({
+        imdbId: item.imdbID,
+        title: item.Title,
+        year: item.Year
+      });
+    });
+    return films;
   }
 
   hasSearchResult() {

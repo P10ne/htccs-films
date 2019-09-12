@@ -37,7 +37,7 @@ export class PaginationComponent implements OnInit {
 
   pageChangedHandler(event) {
     const pageto = Number.parseInt(event.target.dataset.pageto);
-    if (pageto) {
+    if (pageto && pageto !== this.currentPage) {
       console.log(`pagination: ${pageto}`);
       this.onPageChanged.emit(pageto);
       this.update(pageto);

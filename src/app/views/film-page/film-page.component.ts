@@ -33,10 +33,12 @@ export class FilmPageComponent implements OnInit {
     return {
       imdbId: dataJS.imdbID,
       title: dataJS.Title,
-      released: dataJS.Released,
+      year: dataJS.Year,
       poster: dataJS.Poster,
       plot: dataJS.Plot,
-      actors: dataJS.Actors
+      actors: dataJS.Actors,
+      rating: dataJS.imdbRating,
+      genre: dataJS.Genre
     };
   }
 

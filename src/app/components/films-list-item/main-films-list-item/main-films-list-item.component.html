@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-body">
     <h4 class="card-title"><a [routerLink]="['../film-page', FilmItemData.imdbId]">{{FilmItemData.title}}</a></h4>
-    <p class="card-text">{{FilmItemData.released}}</p>
+    <p class="card-text">{{FilmItemData.year}}</p>
 
     <button *ngIf="existInViewed()" type="button" class="btn btn-primary" disabled>В просмотренном</button>
     <button *ngIf="!existInViewed()" type="button" class="btn btn-primary" (click)="addToViewed()">Добавить в просмотренное</button>

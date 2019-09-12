@@ -58,11 +58,9 @@ export class LocStorageService {
 
   addToViewed(film: IFilmDataShort): void {
     if (!this.existInViewed(film)) {
-      const newViewedFilms: object[] = this.currentViewedFilms;
-      newViewedFilms.push(film);
-      localStorage.setItem(LocStorageService.LSKeys.viewed, JSON.stringify(newViewedFilms));
-      this.currentViewedFilms.push(film);
-      console.log(`${JSON.stringify(JSON.stringify(film))} добавлен в просмотренные`);
+      this.getCurrentViewedFilms().push(film);
+      localStorage.setItem(LocStorageService.LSKeys.viewed, JSON.stringify(this.currentViewedFilms));
+      console.log(`${JSON.stringify(JSON.stringify(film))} добавлен в просмотренное`);
     } else {
       console.error('Фильм уже есть в просмотренных');
     }
@@ -70,13 +68,11 @@ export class LocStorageService {
 
   addToFavorites(film: IFilmDataShort): void {
     if (!this.existInFavorites(film)) {
-      const newFavoritesFilms: IFilmDataShort[] = this.currentFavoritesFilms;
-      newFavoritesFilms.push(film);
-      localStorage.setItem(LocStorageService.LSKeys.favorites, JSON.stringify(newFavoritesFilms));
-      this.currentFavoritesFilms.push(film);
+      this.getCurrentFavoritesFilms().push(film);
+      localStorage.setItem(LocStorageService.LSKeys.favorites, JSON.stringify(this.currentFavoritesFilms));
       console.log(`${JSON.stringify(JSON.stringify(film))} добавлен в избранное`);
     } else {
-      console.error('Фильм уже есть в просмотренных');
+      console.error('Фильм уже есть в избранном');
     }
   }
 

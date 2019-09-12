@@ -3,17 +3,43 @@
     <button (click)="goBack()" class="btn btn-primary">← Вернуться назад</button>
   </div>
   <div *ngIf="filmData; else loadBlock" class="row">
-    <img [attr.src]="filmData.poster">
+    <div class="col-auto">
+      <img [attr.src]="filmData.poster">
+    </div>
+
     <div class="col">
       <h1>{{filmData.title}}</h1>
       <div class="row">
+
         <div class="col-auto">
-          <p>Дата выпуска: </p>
+          <p>Год: </p>
+        </div>
+        <div class="col-auto">
+          <p>{{filmData.year}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-auto">
+          <p>Рейтинг: </p>
+        </div>
+        <div class="col-auto">
+          <p>{{filmData.rating}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-auto">
           <p>Актеры: </p>
         </div>
         <div class="col-auto">
-          <p>{{filmData.released}}</p>
           <p>{{filmData.actors}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-auto">
+          <p>Жанр: </p>
+        </div>
+        <div class="col-auto">
+          <p>{{filmData.genre}}</p>
         </div>
       </div>
       <div class="row">

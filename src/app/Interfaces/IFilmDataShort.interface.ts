@@ -1,5 +1,5 @@
 interface IFilmDataShort {
-  imdbId: number;
+  imdbId: string;
   title: string;
-  released: string;
+  year: number;
 }

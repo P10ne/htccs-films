@@ -1,8 +1,10 @@
 interface IFilmDataFull {
-  imdbId: number;
+  imdbId: string;
   title: string;
-  released: string;
+  year: number;
   poster: string;
   plot: string;
   actors: string;
+  rating: number;
+  genre: string;
 }
