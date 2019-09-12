@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {AppConfig} from '../app.config';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +9,11 @@ export class FilmsLoaderService {
     short: 'short',
     full: 'full'
   }
-  url = 'http://www.omdbapi.com/?apikey=a2149e33';
+  url = `http://www.omdbapi.com/?apikey=${AppConfig.imdbKey}`;
   constructor() { }
 
-  getFilmsBySearch(title: string): any {
-    const url = `${this.url}&s=${title}`;
+  getFilmsBySearch(title: string, page: number = 1): any {
+    const url = `${this.url}&s=${title}&page=${page}`;
     return fetch(url);
   }
 

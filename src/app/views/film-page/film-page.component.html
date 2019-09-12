@@ -10,7 +10,6 @@
     <div class="col">
       <h1>{{filmData.title}}</h1>
       <div class="row">
-
         <div class="col-auto">
           <p>Год: </p>
         </div>
@@ -48,5 +47,5 @@
     </div>
 </div>
 
-
-<ng-template #loadBlock>Загрузка</ng-template>
+<ng-template *ngIf="error === ''; else errorBlock" #loadBlock>Загрузка</ng-template>
+<ng-template #errorBlock><p class="text-danger">{{error}}</p></ng-template>

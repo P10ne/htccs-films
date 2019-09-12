@@ -15,7 +15,7 @@ export class FavoritesFilmsListItemComponent extends FilmsListItem {
   }
 
   deleteFromFavorites() {
-    this.locStorage.deleteFromFavorites(this.FilmItemData);
+    this.locStorage.deleteFromCategory(this.FilmItemData, this.locStorage.categories[LocStorageService.LSKeys.favorites]);
     this.mediator.call(MediatorService.favoritesFilmsChanged, null);
   }
 

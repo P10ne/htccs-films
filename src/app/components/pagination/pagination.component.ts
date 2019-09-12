@@ -21,16 +21,14 @@ export class PaginationComponent implements OnInit {
     this.update(1);
   }
 
-  update(current) {
-    if (this.maxPageNumber > 5) {
-      // this.startPage = this.currentPage
-    } else {
-      this.startPage = 1;
-      this.endPage = this.maxPageNumber;
-    }
-    this.currentPage = current;
+  update(newPage) {
+    // Отображаются по две страницы слева и справа от newPage
+    this.startPage = newPage > 3 ? newPage - 2 : 1;
+    this.endPage = newPage > this.maxPageNumber - 3 ? this.maxPageNumber : newPage + 2;
+
+    this.currentPage = newPage;
     this.visiblePages = [];
-    for (let i = this.startPage; i <= this.maxPageNumber; i++) {
+    for (let i = this.startPage; i <= this.endPage; i++) {
       this.visiblePages.push(i);
     }
   }

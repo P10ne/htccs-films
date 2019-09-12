@@ -14,7 +14,7 @@ export class ViewedFilmsListItemComponent extends FilmsListItem {
   }
 
   deleteFromViewed() {
-    this.locStorage.deleteFromViewed(this.FilmItemData);
+    this.locStorage.deleteFromCategory(this.FilmItemData, this.locStorage.categories[LocStorageService.LSKeys.viewed]);
     this.mediator.call(MediatorService.viewedFilmsChanged, null);
   }
 }

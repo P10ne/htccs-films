@@ -2,6 +2,7 @@
   <h2>Просмотренные фильмы</h2>
   <app-viewed-films-list-item *ngFor="let item of viewedFilms" [FilmItemData]="item"></app-viewed-films-list-item>
   <p *ngIf="!hasViewedFilms()">Нет просмотренных фильмов</p>
+  <app-pagination *ngIf="hasViewedFilms()" [itemsCount]="filmsCount" [itemsCountOnPage]="filmsCountOnPage" (onPageChanged)="pageChangeHandler($event)" ></app-pagination>
 </div>
 
-<app-pagination *ngIf="hasViewedFilms()" [itemsCount]="filmsCount" [itemsCountOnPage]="filmsCountOnPage" (onPageChanged)="pageChangeHandler($event)" ></app-pagination>
+

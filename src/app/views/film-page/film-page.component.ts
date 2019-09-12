@@ -13,6 +13,7 @@ export class FilmPageComponent implements OnInit {
   id: string;
   subscription: Subscription;
   filmData: IFilmDataFull;
+  error = '';
   constructor(private activateRoute: ActivatedRoute,
               private filmsLoader: FilmsLoaderService,
               private location: Location) {
@@ -23,9 +24,11 @@ export class FilmPageComponent implements OnInit {
     this.filmsLoader.getFilmById(this.id, FilmsLoaderService.plotType.full)
       .then(response => response.json())
       .then(result => {
+        if (result.Error) { throw new Error(result.Error); }
         console.log(result);
         this.filmData = this.getParsedSearchResult(result);
-      });
+      })
+      .catch(error => this.error = error.message);
   }
 
   getParsedSearchResult(dataJSON): IFilmDataFull {

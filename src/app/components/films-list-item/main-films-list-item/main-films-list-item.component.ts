@@ -15,19 +15,19 @@ export class MainFilmsListItemComponent extends FilmsListItem {
   }
 
   addToViewed() {
-    this.locStorage.addToViewed(this.FilmItemData);
+    this.locStorage.addToCategory(this.FilmItemData, this.locStorage.categories[LocStorageService.LSKeys.viewed]);
   }
 
   addToFavorites() {
-    this.locStorage.addToFavorites(this.FilmItemData);
+    this.locStorage.addToCategory(this.FilmItemData, this.locStorage.categories[LocStorageService.LSKeys.favorites]);
   }
 
   existInViewed() {
-    return this.locStorage.existInViewed(this.FilmItemData);
+    return this.locStorage.exist(this.FilmItemData, this.locStorage.categories[LocStorageService.LSKeys.viewed]);
   }
 
   existInFavorites() {
-    return this.locStorage.existInFavorites(this.FilmItemData);
+    return this.locStorage.exist(this.FilmItemData, this.locStorage.categories[LocStorageService.LSKeys.favorites]);
   }
 
 }

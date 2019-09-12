@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {LocStorageService} from '../../services/loc-storage.service';
 import {MediatorService} from '../../services/mediator.service';
 import {PaginationComponent} from '../../components/pagination/pagination.component';
+import {AppConfig} from '../../app.config';
 
 @Component({
   selector: 'app-saved',
@@ -10,7 +11,7 @@ import {PaginationComponent} from '../../components/pagination/pagination.compon
 })
 export class SavedComponent implements OnInit {
   favoritesFilms: IFilmDataShort[];
-  filmsCountOnPage = 3;
+  filmsCountOnPage = AppConfig.newsOnPage;
   filmsCount: number;
   @ViewChild(PaginationComponent, {static: false})
   private pagination: PaginationComponent;
@@ -29,7 +30,7 @@ export class SavedComponent implements OnInit {
   }
 
   hasFavoritesFilms() {
-    return this.locStorage.hasFavoritesFilms();
+    return this.locStorage.hasFilms(this.locStorage.categories[LocStorageService.LSKeys.favorites]);
   }
 
   ngOnInit() {
@@ -37,12 +38,12 @@ export class SavedComponent implements OnInit {
   }
 
   update() {
-    this.favoritesFilms = this.locStorage.getCurrentFavoritesFilmsForPage(1, this.filmsCountOnPage);
-    this.filmsCount = this.locStorage.getCurrentFavoritesFilms().length;
+    this.favoritesFilms = this.locStorage.getCurrentFilmForPage(1, this.filmsCountOnPage, this.locStorage.categories[LocStorageService.LSKeys.favorites]);
+    this.filmsCount = this.locStorage.getCurrentFilms(this.locStorage.categories[LocStorageService.LSKeys.favorites]).length;
   }
 
   pageChangeHandler(selectedPage) {
     console.log(`saved: ${selectedPage}`);
-    this.favoritesFilms = this.locStorage.getCurrentFavoritesFilmsForPage(selectedPage, this.filmsCountOnPage);
+    this.favoritesFilms = this.locStorage.getCurrentFilmForPage(selectedPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageService.LSKeys.favorites]);
   }
 }
