@@ -20,7 +20,7 @@ export class FilmPageComponent implements OnInit {
     this.subscription = activateRoute.params.subscribe(params => this.id = params.id);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.filmsLoader.getFilmById(this.id, FilmsLoaderService.plotType.full)
       .then(response => response.json())
       .then(result => {
@@ -31,7 +31,7 @@ export class FilmPageComponent implements OnInit {
       .catch(error => this.error = error.message);
   }
 
-  getParsedSearchResult(dataJSON): IFilmDataFull {
+  getParsedSearchResult(dataJSON: any): IFilmDataFull {
     const dataJS = dataJSON;
     return {
       imdbId: dataJS.imdbID,
@@ -45,7 +45,7 @@ export class FilmPageComponent implements OnInit {
     };
   }
 
-  goBack() {
+  goBack(): void {
     this.location.back();
   }
 

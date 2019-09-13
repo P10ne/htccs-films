@@ -19,30 +19,30 @@ export class SavedComponent implements OnInit {
     this.subscribe();
   }
 
-  subscribe() {
+  subscribe(): void {
     this.mediator.subscribe(MediatorService.favoritesFilmsChanged, () => {
       this.favoritesFilmsChangedHandler();
     });
   }
 
-  favoritesFilmsChangedHandler() {
+  favoritesFilmsChangedHandler(): void {
     this.update();
   }
 
-  hasFavoritesFilms() {
+  hasFavoritesFilms(): boolean {
     return this.locStorage.hasFilms(this.locStorage.categories[LocStorageService.LSKeys.favorites]);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.update();
   }
 
-  update() {
+  update(): void {
     this.favoritesFilms = this.locStorage.getCurrentFilmForPage(1, this.filmsCountOnPage, this.locStorage.categories[LocStorageService.LSKeys.favorites]);
     this.filmsCount = this.locStorage.getCurrentFilms(this.locStorage.categories[LocStorageService.LSKeys.favorites]).length;
   }
 
-  pageChangeHandler(selectedPage) {
+  pageChangeHandler(selectedPage: number): void {
     console.log(`saved: ${selectedPage}`);
     this.favoritesFilms = this.locStorage.getCurrentFilmForPage(selectedPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageService.LSKeys.favorites]);
   }

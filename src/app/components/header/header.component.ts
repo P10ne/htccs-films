@@ -11,9 +11,9 @@ interface LinkItem {
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  show = false;
+  showNavBar = false;
   navLinks: LinkItem[] = [
-    {text: 'Главная', link: '/'},
+    {text: 'Главная', link: ''},
     {text: 'Сохраненные', link: 'saved'},
     {text: 'Просмотренные', link: 'viewed'}
   ];
@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
   }
 
   showNavBarClickHandler() {
-    this.show = !this.show;
+    this.showNavBar = !this.showNavBar;
   }
 
 }

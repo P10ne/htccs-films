@@ -16,27 +16,27 @@ export class ViewedComponent implements OnInit {
       this.subscribe();
   }
 
-  subscribe() {
+  subscribe(): void {
     const self = this; // В отдельный метод
     this.mediator.subscribe(MediatorService.viewedFilmsChanged, () => {
         self.update();
     });
   }
 
-  hasViewedFilms() {
+  hasViewedFilms(): boolean {
     return this.locStorage.hasFilms(this.locStorage.categories[LocStorageService.LSKeys.viewed]);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.update();
   }
 
-  update() {
+  update(): void {
     this.viewedFilms = this.locStorage.getCurrentFilmForPage(1, this.filmsCountOnPage, this.locStorage.categories[LocStorageService.LSKeys.viewed]);
     this.filmsCount = this.locStorage.getCurrentFilms(this.locStorage.categories[LocStorageService.LSKeys.viewed]).length;
   }
 
-  pageChangeHandler(selectedPage) {
+  pageChangeHandler(selectedPage: number): void {
     console.log(`saved: ${selectedPage}`);
     this.viewedFilms = this.locStorage.getCurrentFilmForPage(selectedPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageService.LSKeys.viewed]);
   }

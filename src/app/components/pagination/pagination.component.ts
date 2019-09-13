@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {MediatorService} from '../../services/mediator.service';
 
 @Component({
   selector: 'app-pagination',
@@ -14,15 +15,27 @@ export class PaginationComponent implements OnInit {
   startPage: number;
   endPage: number;
   visiblePages: number[];
-  constructor() { }
+  constructor(private mediatorService: MediatorService) {
+  }
 
-  ngOnInit() {
-    this.maxPageNumber = Math.ceil(this.itemsCount / this.itemsCountOnPage);
+  ngOnInit(): void {
+    this.update(1);
+    this.subscribe();
+  }
+
+  searchFilmsHandler(): void {
     this.update(1);
   }
 
-  update(newPage) {
+  subscribe(): void {
+    this.mediatorService.subscribe(MediatorService.searchEvent, () => {
+      this.searchFilmsHandler();
+    });
+  }
+
+  update(newPage: number): void {
     // Отображаются по две страницы слева и справа от newPage
+    this.maxPageNumber = Math.ceil(this.itemsCount / this.itemsCountOnPage);
     this.startPage = newPage > 3 ? newPage - 2 : 1;
     this.endPage = newPage > this.maxPageNumber - 3 ? this.maxPageNumber : newPage + 2;
 
@@ -33,10 +46,9 @@ export class PaginationComponent implements OnInit {
     }
   }
 
-  pageChangedHandler(event) {
+  pageChangedHandler(event: any): void {
     const pageto = Number.parseInt(event.target.dataset.pageto);
     if (pageto && pageto !== this.currentPage) {
-      console.log(`pagination: ${pageto}`);
       this.onPageChanged.emit(pageto);
       this.update(pageto);
     }

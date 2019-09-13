@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class MediatorService {
   static viewedFilmsChanged = 'viewed_films_changed';
   static favoritesFilmsChanged = 'favorites_films_changed';
+  static searchEvent = 'search_event';
   events: object;
   constructor() {
     this.events = {};

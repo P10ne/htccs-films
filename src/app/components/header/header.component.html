@@ -13,7 +13,7 @@
       </button>
 
       <!-- Navbar links -->
-      <div class="collapse navbar-collapse" [class.show]="show" id="collapsibleNavbar">
+      <div class="collapse navbar-collapse" [class.show]="showNavBar" id="collapsibleNavbar">
         <ul class="navbar-nav">
           <li *ngFor="let item of navLinks" class="nav-item">
             <a [routerLink]="item.link" class="nav-link" routerLinkActive="active">{{item.text}}</a>
