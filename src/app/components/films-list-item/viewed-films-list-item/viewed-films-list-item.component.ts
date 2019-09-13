@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FilmsListItem} from '../films-list-item';
 import {LocStorageService} from '../../../services/loc-storage.service';
 import {MediatorService} from '../../../services/mediator.service';
@@ -15,6 +15,6 @@ export class ViewedFilmsListItemComponent extends FilmsListItem {
 
   deleteFromViewed() {
     this.locStorage.deleteFromCategory(this.FilmItemData, this.locStorage.categories[LocStorageService.LSKeys.viewed]);
-    this.mediator.call(MediatorService.viewedFilmsChanged, null);
+    this.mediator.call(EventNamesEnum.ViewedFilmsChanged, null);
   }
 }

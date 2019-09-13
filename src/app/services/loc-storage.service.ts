@@ -49,7 +49,6 @@ export class LocStorageService {
     if (!this.exist(film, category)) {
       this.getCurrentFilms(category).push(film);
       localStorage.setItem(category.key, JSON.stringify(category.data));
-      console.log(`${JSON.stringify(JSON.stringify(film))} добавлен в просмотренное`);
     } else {
       console.error('Фильм уже есть в просмотренных');
     }

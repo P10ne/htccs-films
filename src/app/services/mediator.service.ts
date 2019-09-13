@@ -4,9 +4,9 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class MediatorService {
-  static viewedFilmsChanged = 'viewed_films_changed';
-  static favoritesFilmsChanged = 'favorites_films_changed';
-  static searchEvent = 'search_event';
+  ViewedFilmsChanged = 'viewed_films_changed';
+  FavoritesFilmsChanged = 'favorites_films_changed';
+  SearchEvent = 'search_event';
   events: object;
   constructor() {
     this.events = {};
@@ -21,8 +21,6 @@ export class MediatorService {
   }
 
   unSubscribe(name, handler) {
-    /* This is a bit tricky, because how would you identify functions?
-       This simple solution should work if you pass THE SAME handler. */
     if (!this.events.hasOwnProperty(name)) {
       return;
     }

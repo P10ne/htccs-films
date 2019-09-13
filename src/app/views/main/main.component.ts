@@ -1,10 +1,6 @@
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {FilmsLoaderService} from '../../services/films-loader.service';
-import {PaginationComponent} from '../../components/pagination/pagination.component';
 import {MediatorService} from '../../services/mediator.service';
-import {LocStorageService} from '../../services/loc-storage.service';
-import {map} from 'rxjs/operators';
-
 
 @Component({
   selector: 'app-main',
@@ -18,17 +14,29 @@ export class MainComponent {
   filmsCountOnPage = 10;
   filmsCount = 0;
   searchError = '';
-  @ViewChild(PaginationComponent, {static: false}) pagination: PaginationComponent;
+  get hasSearchTitle() {
+    return this.searchTitle.trim().length > 0;
+  }
+  get hasSearchError() {
+    return this.searchError !== '';
+  }
+  get hasSearchResult() {
+    return this.searchResult.length > 0;
+  }
+  get needPagination() {
+    return this.filmsCount > this.filmsCountOnPage;
+  }
+
   constructor(private filmsLoader: FilmsLoaderService, private mediatorService: MediatorService) {
 
-}
+  }
 
   searchClickHandler(btn: any = null) {
     this.searchError = '';
     if (this.searchTitle.trim().length > 0) {
       if (!btn || btn && btn.key === 'Enter') { // Клик или enter
         this.setPageData()
-        this.mediatorService.call(MediatorService.searchEvent, null);
+        this.mediatorService.call(this.mediatorService.SearchEvent, null);
       }
     }
   }
@@ -49,22 +57,5 @@ export class MainComponent {
   pageChangeHandler(newPage: number) {
     this.currentPage = newPage;
     this.setPageData();
-  }
-/*
-  getParsedSearchResult(dataJSON): IFilmDataShort[] {
-    const dataJS = dataJSON;
-    const films: IFilmDataShort[] = [];
-    dataJS.forEach((item) => {
-      films.push({
-        imdbId: item.imdbID,
-        title: item.Title,
-        year: item.Year
-      });
-    });
-    return films;
-  }
-*/
-  hasSearchResult(): boolean {
-    return this.searchResult.length > 0;
   }
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {LocStorageService} from '../../../services/loc-storage.service';
 import {FilmsListItem} from '../films-list-item';
 
@@ -9,6 +9,14 @@ import {FilmsListItem} from '../films-list-item';
   providers: [LocStorageService]
 })
 export class MainFilmsListItemComponent extends FilmsListItem {
+
+  get existInViewed() {
+    return this.locStorage.exist(this.FilmItemData, this.locStorage.categories[LocStorageService.LSKeys.viewed]);
+  }
+
+  get existInFavorites() {
+    return this.locStorage.exist(this.FilmItemData, this.locStorage.categories[LocStorageService.LSKeys.favorites]);
+  }
 
   constructor(private locStorage: LocStorageService) {
     super();
@@ -21,13 +29,4 @@ export class MainFilmsListItemComponent extends FilmsListItem {
   addToFavorites() {
     this.locStorage.addToCategory(this.FilmItemData, this.locStorage.categories[LocStorageService.LSKeys.favorites]);
   }
-
-  existInViewed() {
-    return this.locStorage.exist(this.FilmItemData, this.locStorage.categories[LocStorageService.LSKeys.viewed]);
-  }
-
-  existInFavorites() {
-    return this.locStorage.exist(this.FilmItemData, this.locStorage.categories[LocStorageService.LSKeys.favorites]);
-  }
-
 }

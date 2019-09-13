@@ -2,11 +2,10 @@
   <div class="row row--mg">
     <button (click)="goBack()" class="btn btn-primary">← Вернуться назад</button>
   </div>
-  <div *ngIf="filmData; else loadBlock" class="row">
+  <div *ngIf="hasFilmData; else loadBlock" class="row">
     <div class="col-12 col-md-auto d-flex justify-content-center">
       <img [attr.src]="filmData.poster">
     </div>
-
     <div class="col">
       <div class="row row--mg flex-nowrap">
         <div class="col-auto">
@@ -29,42 +28,3 @@
 
 <ng-template *ngIf="error === ''; else errorBlock" #loadBlock>Загрузка</ng-template>
 <ng-template #errorBlock><p class="text-danger">{{error}}</p></ng-template>
-
-<!--
-  <h1>{{filmData.title}}</h1>
-  <div class="row">
-    <div class="col-auto">
-      <p>Год: </p>
-    </div>
-    <div class="col-auto">
-      <p>{{filmData.year}}</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-auto">
-      <p>Рейтинг: </p>
-    </div>
-    <div class="col-auto">
-      <p>{{filmData.rating}}</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-auto">
-      <p>Актеры: </p>
-    </div>
-    <div class="col-auto">
-      <p>{{filmData.actors}}</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-auto">
-      <p>Жанр: </p>
-    </div>
-    <div class="col-auto">
-      <p>{{filmData.genre}}</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">{{filmData.plot}}</div>
-  </div>
--->

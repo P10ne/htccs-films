@@ -14,6 +14,9 @@ export class FilmPageComponent implements OnInit {
   subscription: Subscription;
   filmData: IFilmDataFull;
   error = '';
+  get hasFilmData() {
+    return this.filmData !== undefined;
+  }
   constructor(private activateRoute: ActivatedRoute,
               private filmsLoader: FilmsLoaderService,
               private location: Location) {
@@ -21,7 +24,7 @@ export class FilmPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.filmsLoader.getFilmById(this.id, FilmsLoaderService.plotType.full)
+    this.filmsLoader.getFilmById(this.id, PlotTypeEnum.Full)
       .subscribe(
         data => this.filmData = data,
         error => this.error = error.message

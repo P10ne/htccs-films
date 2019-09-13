@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {LocStorageService} from '../../services/loc-storage.service';
 import {MediatorService} from '../../services/mediator.service';
 import {PaginationComponent} from '../../components/pagination/pagination.component';
-import {AppConfig} from '../../app.config';
+import {AppConfigService} from '../../services/app.config.service';
 
 @Component({
   selector: 'app-saved',
@@ -11,26 +11,20 @@ import {AppConfig} from '../../app.config';
 })
 export class SavedComponent implements OnInit {
   favoritesFilms: IFilmDataShort[];
-  filmsCountOnPage = AppConfig.newsOnPage;
+  filmsCountOnPage = this.config.newsOnPage;
   filmsCount: number;
-  @ViewChild(PaginationComponent, {static: false})
+  get hasFavoritesFilms(): boolean {
+    return this.locStorage.hasFilms(this.locStorage.categories[LocStorageService.LSKeys.favorites]);
+  }
   private pagination: PaginationComponent;
-  constructor(private locStorage: LocStorageService, private mediator: MediatorService) {
+  constructor(private locStorage: LocStorageService, private mediator: MediatorService, private config: AppConfigService) {
     this.subscribe();
   }
 
   subscribe(): void {
-    this.mediator.subscribe(MediatorService.favoritesFilmsChanged, () => {
-      this.favoritesFilmsChangedHandler();
+    this.mediator.subscribe(this.mediator.FavoritesFilmsChanged, () => {
+      this.update();
     });
-  }
-
-  favoritesFilmsChangedHandler(): void {
-    this.update();
-  }
-
-  hasFavoritesFilms(): boolean {
-    return this.locStorage.hasFilms(this.locStorage.categories[LocStorageService.LSKeys.favorites]);
   }
 
   ngOnInit(): void {

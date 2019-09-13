@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {AppConfig} from '../app.config';
+import {AppConfigService} from './app.config.service';
 import {HttpClient} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
@@ -8,12 +8,8 @@ import {Observable, throwError} from 'rxjs';
   providedIn: 'root'
 })
 export class FilmsLoaderService {
-  static plotType = {
-    short: 'short',
-    full: 'full'
-  };
-  url = `http://www.omdbapi.com/?apikey=${AppConfig.imdbKey}`;
-  constructor(private http: HttpClient) { }
+  url = `http://www.omdbapi.com/?apikey=${this.config.imdbKey}`;
+  constructor(private http: HttpClient, private config: AppConfigService) { }
 
   getFilmsBySearch(title: string, page: number = 1): Observable<any> {
     const url = `${this.url}&s=${title}&page=${page}`;
@@ -36,7 +32,7 @@ export class FilmsLoaderService {
         }));
   }
 
-  getFilmById(id: string, plot = FilmsLoaderService.plotType.short): Observable<IFilmDataFull> {
+  getFilmById(id: string, plot = PlotTypeEnum.Short): Observable<IFilmDataFull> {
     const url = `${this.url}&i=${id}&plot=${plot}`;
     return this.http.get(url)
       .pipe(map((data: any) => {

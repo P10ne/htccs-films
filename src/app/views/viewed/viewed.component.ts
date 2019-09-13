@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {LocStorageService} from '../../services/loc-storage.service';
 import {MediatorService} from '../../services/mediator.service';
-import {AppConfig} from '../../app.config';
+import {AppConfigService} from '../../services/app.config.service';
 
 @Component({
   selector: 'app-viewed',
@@ -10,21 +10,19 @@ import {AppConfig} from '../../app.config';
 })
 export class ViewedComponent implements OnInit {
   viewedFilms: IFilmDataShort[];
-  filmsCountOnPage = AppConfig.newsOnPage;
+  filmsCountOnPage = this.config.newsOnPage
   filmsCount: number;
-  constructor(private locStorage: LocStorageService, private mediator: MediatorService) {
+  get hasViewedFilms(): boolean {
+    return this.locStorage.hasFilms(this.locStorage.categories[LocStorageService.LSKeys.viewed]);
+  }
+  constructor(private locStorage: LocStorageService, private mediator: MediatorService, private config: AppConfigService) {
       this.subscribe();
   }
 
   subscribe(): void {
-    const self = this; // В отдельный метод
-    this.mediator.subscribe(MediatorService.viewedFilmsChanged, () => {
-        self.update();
+    this.mediator.subscribe(this.mediator.ViewedFilmsChanged, () => {
+        this.update();
     });
-  }
-
-  hasViewedFilms(): boolean {
-    return this.locStorage.hasFilms(this.locStorage.categories[LocStorageService.LSKeys.viewed]);
   }
 
   ngOnInit(): void {
@@ -37,7 +35,6 @@ export class ViewedComponent implements OnInit {
   }
 
   pageChangeHandler(selectedPage: number): void {
-    console.log(`saved: ${selectedPage}`);
     this.viewedFilms = this.locStorage.getCurrentFilmForPage(selectedPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageService.LSKeys.viewed]);
   }
 

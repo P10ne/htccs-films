@@ -28,7 +28,7 @@ export class PaginationComponent implements OnInit {
   }
 
   subscribe(): void {
-    this.mediatorService.subscribe(MediatorService.searchEvent, () => {
+    this.mediatorService.subscribe(this.mediatorService.SearchEvent, () => {
       this.searchFilmsHandler();
     });
   }
