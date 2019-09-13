@@ -22,27 +22,10 @@ export class FilmPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.filmsLoader.getFilmById(this.id, FilmsLoaderService.plotType.full)
-      .then(response => response.json())
-      .then(result => {
-        if (result.Error) { throw new Error(result.Error); }
-        console.log(result);
-        this.filmData = this.getParsedSearchResult(result);
-      })
-      .catch(error => this.error = error.message);
-  }
-
-  getParsedSearchResult(dataJSON: any): IFilmDataFull {
-    const dataJS = dataJSON;
-    return {
-      imdbId: dataJS.imdbID,
-      title: dataJS.Title,
-      year: dataJS.Year,
-      poster: dataJS.Poster,
-      plot: dataJS.Plot,
-      actors: dataJS.Actors,
-      rating: dataJS.imdbRating,
-      genre: dataJS.Genre
-    };
+      .subscribe(
+        data => this.filmData = data,
+        error => this.error = error.message
+      );
   }
 
   goBack(): void {
