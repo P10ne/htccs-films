@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {LocStorageService} from '../../services/loc-storage.service';
 import {MediatorService} from '../../services/mediator.service';
 import {AppConfigService} from '../../services/app.config.service';
+import {EventNamesEnum} from '../../enums/EventNames.enum';
+import {LocStorageEnum} from '../../enums/LocStorage.enum';
 
 @Component({
   selector: 'app-viewed',
@@ -13,14 +15,14 @@ export class ViewedComponent implements OnInit {
   filmsCountOnPage = this.config.newsOnPage
   filmsCount: number;
   get hasViewedFilms(): boolean {
-    return this.locStorage.hasFilms(this.locStorage.categories[LocStorageService.LSKeys.viewed]);
+    return this.locStorage.hasFilms(this.locStorage.categories[LocStorageEnum.Viewed]);
   }
   constructor(private locStorage: LocStorageService, private mediator: MediatorService, private config: AppConfigService) {
       this.subscribe();
   }
 
   subscribe(): void {
-    this.mediator.subscribe(this.mediator.ViewedFilmsChanged, () => {
+    this.mediator.subscribe(EventNamesEnum.ViewedFilmsChanged, () => {
         this.update();
     });
   }
@@ -30,12 +32,12 @@ export class ViewedComponent implements OnInit {
   }
 
   update(): void {
-    this.viewedFilms = this.locStorage.getCurrentFilmForPage(1, this.filmsCountOnPage, this.locStorage.categories[LocStorageService.LSKeys.viewed]);
-    this.filmsCount = this.locStorage.getCurrentFilms(this.locStorage.categories[LocStorageService.LSKeys.viewed]).length;
+    this.viewedFilms = this.locStorage.getCurrentFilmForPage(1, this.filmsCountOnPage, this.locStorage.categories[LocStorageEnum.Viewed]);
+    this.filmsCount = this.locStorage.getCurrentFilms(this.locStorage.categories[LocStorageEnum.Viewed]).length;
   }
 
   pageChangeHandler(selectedPage: number): void {
-    this.viewedFilms = this.locStorage.getCurrentFilmForPage(selectedPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageService.LSKeys.viewed]);
+    this.viewedFilms = this.locStorage.getCurrentFilmForPage(selectedPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageEnum.Viewed]);
   }
 
 }

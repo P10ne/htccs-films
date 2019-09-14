@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {FilmsLoaderService} from '../../services/films-loader.service';
 import {MediatorService} from '../../services/mediator.service';
+import {EventNamesEnum} from '../../enums/EventNames.enum';
 
 @Component({
   selector: 'app-main',
@@ -31,13 +32,11 @@ export class MainComponent {
 
   }
 
-  searchClickHandler(btn: any = null) {
+  searchClickHandler() {
     this.searchError = '';
     if (this.searchTitle.trim().length > 0) {
-      if (!btn || btn && btn.key === 'Enter') { // Клик или enter
-        this.setPageData()
-        this.mediatorService.call(this.mediatorService.SearchEvent, null);
-      }
+      this.setPageData();
+      this.mediatorService.call(EventNamesEnum.SearchEvent, null);
     }
   }
 

@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {FilmsLoaderService} from '../../services/films-loader.service';
 import { Location } from '@angular/common';
+import {PlotTypeEnum} from '../../enums/PlotType.enum';
 
 @Component({
   selector: 'app-film-page',

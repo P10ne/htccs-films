@@ -1,6 +1,6 @@
 <div class="container container-fluid">
   <div class="d-flex">
-      <input type="text" [(ngModel)]="searchTitle" class="form-control flex-grow-1" (keyup)="searchClickHandler($event)">
+      <input type="text" [(ngModel)]="searchTitle" class="form-control flex-grow-1" (keyup.enter)="searchClickHandler()">
       <button *ngIf="hasSearchTitle" type="submit" class="btn" (click)="searchClickHandler()">Найти</button>
       <button *ngIf="!hasSearchTitle" disabled type="submit" class="btn" (click)="searchClickHandler()">Найти</button>
   </div>

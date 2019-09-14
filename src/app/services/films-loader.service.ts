@@ -3,6 +3,7 @@ import {AppConfigService} from './app.config.service';
 import {HttpClient} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
+import {PlotTypeEnum} from '../enums/PlotType.enum';
 
 @Injectable({
   providedIn: 'root'

@@ -3,6 +3,8 @@ import {LocStorageService} from '../../services/loc-storage.service';
 import {MediatorService} from '../../services/mediator.service';
 import {PaginationComponent} from '../../components/pagination/pagination.component';
 import {AppConfigService} from '../../services/app.config.service';
+import {EventNamesEnum} from '../../enums/EventNames.enum';
+import {LocStorageEnum} from '../../enums/LocStorage.enum';
 
 @Component({
   selector: 'app-saved',
@@ -14,7 +16,7 @@ export class SavedComponent implements OnInit {
   filmsCountOnPage = this.config.newsOnPage;
   filmsCount: number;
   get hasFavoritesFilms(): boolean {
-    return this.locStorage.hasFilms(this.locStorage.categories[LocStorageService.LSKeys.favorites]);
+    return this.locStorage.hasFilms(this.locStorage.categories[LocStorageEnum.Favorites]);
   }
   private pagination: PaginationComponent;
   constructor(private locStorage: LocStorageService, private mediator: MediatorService, private config: AppConfigService) {
@@ -22,7 +24,7 @@ export class SavedComponent implements OnInit {
   }
 
   subscribe(): void {
-    this.mediator.subscribe(this.mediator.FavoritesFilmsChanged, () => {
+    this.mediator.subscribe(EventNamesEnum.FavoritesFilmsChanged, () => {
       this.update();
     });
   }
@@ -32,12 +34,12 @@ export class SavedComponent implements OnInit {
   }
 
   update(): void {
-    this.favoritesFilms = this.locStorage.getCurrentFilmForPage(1, this.filmsCountOnPage, this.locStorage.categories[LocStorageService.LSKeys.favorites]);
-    this.filmsCount = this.locStorage.getCurrentFilms(this.locStorage.categories[LocStorageService.LSKeys.favorites]).length;
+    this.favoritesFilms = this.locStorage.getCurrentFilmForPage(1, this.filmsCountOnPage, this.locStorage.categories[LocStorageEnum.Favorites]);
+    this.filmsCount = this.locStorage.getCurrentFilms(this.locStorage.categories[LocStorageEnum.Favorites]).length;
   }
 
   pageChangeHandler(selectedPage: number): void {
     console.log(`saved: ${selectedPage}`);
-    this.favoritesFilms = this.locStorage.getCurrentFilmForPage(selectedPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageService.LSKeys.favorites]);
+    this.favoritesFilms = this.locStorage.getCurrentFilmForPage(selectedPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageEnum.Favorites]);
   }
 }

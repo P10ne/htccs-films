@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MediatorService} from '../../services/mediator.service';
+import {EventNamesEnum} from '../../enums/EventNames.enum';
 
 @Component({
   selector: 'app-pagination',
@@ -28,7 +29,7 @@ export class PaginationComponent implements OnInit {
   }
 
   subscribe(): void {
-    this.mediatorService.subscribe(this.mediatorService.SearchEvent, () => {
+    this.mediatorService.subscribe(EventNamesEnum.SearchEvent, () => {
       this.searchFilmsHandler();
     });
   }

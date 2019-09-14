@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {LocStorageEnum} from '../enums/LocStorage.enum';
 
 class Category {
   key: string;
@@ -13,14 +14,9 @@ class Category {
   providedIn: 'root'
 })
 export class LocStorageService {
-  static LSKeys = {
-    viewed: 'viewed',
-    favorites: 'favorites'
-  };
-
   categories = {
-    [LocStorageService.LSKeys.viewed]: new Category(LocStorageService.LSKeys.viewed, JSON.parse(localStorage.getItem(LocStorageService.LSKeys.viewed) || '[]')),
-    [LocStorageService.LSKeys.favorites]: new Category(LocStorageService.LSKeys.favorites, JSON.parse(localStorage.getItem(LocStorageService.LSKeys.favorites) || '[]'))
+    [LocStorageEnum.Viewed]: new Category(LocStorageEnum.Viewed, JSON.parse(localStorage.getItem(LocStorageEnum.Viewed) || '[]')),
+    [LocStorageEnum.Favorites]: new Category(LocStorageEnum.Favorites, JSON.parse(localStorage.getItem(LocStorageEnum.Favorites) || '[]'))
   };
 
   getCurrentFilms(category: Category): IFilmDataShort[] {
