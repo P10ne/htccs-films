@@ -1,8 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {FilmsListItem} from '../films-list-item';
 import {LocStorageService} from '../../../services/loc-storage.service';
-import {MediatorService} from '../../../services/mediator.service';
-import {EventNamesEnum} from '../../../enums/EventNames.enum';
 import {LocStorageEnum} from '../../../enums/LocStorage.enum';
 
 @Component({
@@ -11,12 +9,13 @@ import {LocStorageEnum} from '../../../enums/LocStorage.enum';
   styleUrls: ['./viewed-films-list-item.component.scss']
 })
 export class ViewedFilmsListItemComponent extends FilmsListItem {
-  constructor(private locStorage: LocStorageService, private mediator: MediatorService) {
+  @Output() deleteEmitter = new EventEmitter();
+  constructor(private locStorage: LocStorageService) {
     super();
   }
 
   deleteFromViewed() {
     this.locStorage.deleteFromCategory(this.FilmItemData, this.locStorage.categories[LocStorageEnum.Viewed]);
-    this.mediator.call(EventNamesEnum.ViewedFilmsChanged, null);
+    this.deleteEmitter.emit();
   }
 }

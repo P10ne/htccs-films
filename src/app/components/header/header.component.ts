@@ -20,5 +20,4 @@ export class HeaderComponent {
   showNavBarClickHandler() {
     this.showNavBar = !this.showNavBar;
   }
-
 }

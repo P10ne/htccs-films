@@ -1,6 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MediatorService} from '../../services/mediator.service';
-import {EventNamesEnum} from '../../enums/EventNames.enum';
 
 @Component({
   selector: 'app-pagination',
@@ -16,7 +14,7 @@ export class PaginationComponent implements OnInit {
   startPage: number;
   endPage: number;
   visiblePages: number[];
-  constructor(private mediatorService: MediatorService) {
+  constructor() {
   }
 
   ngOnInit(): void {
@@ -24,7 +22,6 @@ export class PaginationComponent implements OnInit {
   }
 
   update(newPage: number): void {
-    console.log('visible');
     // Отображаются по две страницы слева и справа от newPage
     this.maxPageNumber = Math.ceil(this.itemsCount / this.itemsCountOnPage);
     this.startPage = newPage > 3 ? newPage - 2 : 1;

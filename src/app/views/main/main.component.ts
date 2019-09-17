@@ -1,9 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FilmsLoaderService} from '../../services/films-loader.service';
-import {MediatorService} from '../../services/mediator.service';
-import {EventNamesEnum} from '../../enums/EventNames.enum';
 import {Subscription} from 'rxjs';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Route, Router} from '@angular/router';
 
 @Component({
   selector: 'app-main',
@@ -31,24 +29,41 @@ export class MainComponent {
     return this.filmsCount > this.filmsCountOnPage;
   }
 
-  constructor(private filmsLoader: FilmsLoaderService, private mediatorService: MediatorService, private route: ActivatedRoute) {
+  constructor(private filmsLoader: FilmsLoaderService, private route: ActivatedRoute, private router: Router) {
     this.querySubscription = route.queryParams.subscribe(
       (queryParam: any) => {
         this.searchTitle = queryParam['searchtitle'];
-        this.currentPage = Number.parseInt(queryParam['page']);
+        const queryPage = Number.parseInt(queryParam['page']);
+        this.currentPage = queryPage ? queryPage : 1;
       }
     );
     if (this.searchTitle) {
       this.createResults();
     }
+  }
 
+  searchClickHandler() {
+    this.currentPage = 1;
+    this.navigateToPage(this.currentPage);
+    this.createResults();
+  }
+
+  navigateToPage(page: number) {
+    this.router.navigate(
+      [''],
+      {
+        queryParams: {
+          'searchtitle': this.searchTitle,
+          'page': page
+        }
+      }
+    );
   }
 
   createResults() {
     this.searchError = '';
     if (this.searchTitle.trim().length > 0) {
       this.setPageData();
-      this.mediatorService.call(EventNamesEnum.SearchEvent, null);
     }
   }
 
@@ -61,12 +76,14 @@ export class MainComponent {
         },
           error => {
             this.searchError = error.message;
+            console.error(error);
           });
 
   }
 
   pageChangeHandler(newPage: number) {
     this.currentPage = newPage;
+    this.navigateToPage(this.currentPage);
     this.setPageData();
   }
 }
