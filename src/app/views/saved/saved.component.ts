@@ -15,6 +15,7 @@ export class SavedComponent implements OnInit {
   favoritesFilms: IFilmDataShort[];
   filmsCountOnPage = this.config.newsOnPage;
   filmsCount: number;
+  currentPage: number;
   get hasFavoritesFilms(): boolean {
     return this.locStorage.hasFilms(this.locStorage.categories[LocStorageEnum.Favorites]);
   }

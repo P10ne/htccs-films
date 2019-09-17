@@ -11,7 +11,7 @@ export class PaginationComponent implements OnInit {
   @Input() itemsCountOnPage: number;
   @Input() itemsCount: number;
   @Output() onPageChanged = new EventEmitter<number>();
-  currentPage: number;
+  @Input() currentPage: number;
   maxPageNumber: number;
   startPage: number;
   endPage: number;
@@ -20,21 +20,11 @@ export class PaginationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.update(1);
-    this.subscribe();
-  }
-
-  searchFilmsHandler(): void {
-    this.update(1);
-  }
-
-  subscribe(): void {
-    this.mediatorService.subscribe(EventNamesEnum.SearchEvent, () => {
-      this.searchFilmsHandler();
-    });
+    this.update(this.currentPage);
   }
 
   update(newPage: number): void {
+    console.log('visible');
     // Отображаются по две страницы слева и справа от newPage
     this.maxPageNumber = Math.ceil(this.itemsCount / this.itemsCountOnPage);
     this.startPage = newPage > 3 ? newPage - 2 : 1;
