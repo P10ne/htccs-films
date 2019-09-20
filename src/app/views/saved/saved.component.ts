@@ -1,10 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {LocStorageService} from '../../services/loc-storage.service';
-import {PaginationComponent} from '../../components/pagination/pagination.component';
 import {AppConfigService} from '../../services/app.config.service';
 import {LocStorageEnum} from '../../enums/LocStorage.enum';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Store} from '@ngrx/store';
+import {MyFilms} from '../../redux/app.state';
 
 @Component({
   selector: 'app-saved',
@@ -13,46 +14,32 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class SavedComponent implements OnInit {
   favoritesFilms: IFilmDataShort[];
-  filmsCountOnPage = this.config.newsOnPage;
-  filmsCount: number;
   currentPage: number;
-  private querySubscription: Subscription;
+  filmsCount: number;
+  filmsCountOnPage = this.config.newsOnPage;
   get hasFavoritesFilms(): boolean {
-    return this.locStorage.hasFilms(this.locStorage.categories[LocStorageEnum.Favorites]);
+    return this.favoritesFilms && this.favoritesFilms.length > 0;
   }
-  constructor(private locStorage: LocStorageService, private config: AppConfigService, private route: ActivatedRoute, private router: Router) {
-    this.querySubscription = route.queryParams.subscribe(
-      (queryParams: any) => {
-        const queryPage = Number.parseInt(queryParams['page']);
-        this.currentPage = queryPage ? queryPage : 1;
-      }
-    );
-  }
+  constructor(private locStorage: LocStorageService,
+              private config: AppConfigService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private store: Store<MyFilms>) {}
 
   ngOnInit(): void {
-    this.update();
+    this.store.select('appPage').subscribe(({saved}) => {
+      this.favoritesFilms = saved.currentFilms;
+      this.currentPage = saved.currentPage;
+      this.filmsCount = saved.totalCount;
+    });
+    this.loadFilms();
   }
 
-  update(): void {
-    this.favoritesFilms = this.locStorage.getCurrentFilmForPage(this.currentPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageEnum.Favorites]);
-    this.filmsCount = this.locStorage.getCurrentFilms(this.locStorage.categories[LocStorageEnum.Favorites]).length;
+  loadFilms() {
+    this.locStorage.getCurrentFilmForPage(this.currentPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageEnum.Favorites]);
   }
 
   pageChangeHandler(selectedPage: number): void {
     console.log(`saved: ${selectedPage}`);
-    this.currentPage = selectedPage;
-    this.navigateToPage(this.currentPage);
-    this.favoritesFilms = this.locStorage.getCurrentFilmForPage(this.currentPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageEnum.Favorites]);
-  }
-
-  navigateToPage(page: number) {
-    this.router.navigate(
-      ['/saved'],
-      {
-        queryParams: {
-          'page': page
-        }
-      }
-    );
   }
 }

@@ -16,6 +16,8 @@ import { ViewedFilmsListItemComponent } from './components/films-list-item/viewe
 import { FavoritesFilmsListItemComponent } from './components/films-list-item/favorites-films-list-item/favorites-films-list-item.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import {HttpClient, HttpClientModule, HttpHandler} from '@angular/common/http';
+import {StoreModule} from '@ngrx/store';
+import {appReducer} from './redux/app.reducer';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import {HttpClient, HttpClientModule, HttpHandler} from '@angular/common/http';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot({savedFilms: appReducer})
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent]

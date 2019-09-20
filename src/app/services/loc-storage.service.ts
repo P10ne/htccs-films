@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import {LocStorageEnum} from '../enums/LocStorage.enum';
+import {Store} from '@ngrx/store';
+import {AppState} from '../redux/app.state';
+import {LoadSavedFilms} from '../redux/app.actions';
 
 class Category {
   key: string;
@@ -14,6 +17,9 @@ class Category {
   providedIn: 'root'
 })
 export class LocStorageService {
+
+  constructor(private store: Store<AppState>) {}
+
   categories = {
     [LocStorageEnum.Viewed]: new Category(LocStorageEnum.Viewed, JSON.parse(localStorage.getItem(LocStorageEnum.Viewed) || '[]')),
     [LocStorageEnum.Favorites]: new Category(LocStorageEnum.Favorites, JSON.parse(localStorage.getItem(LocStorageEnum.Favorites) || '[]'))
@@ -23,17 +29,14 @@ export class LocStorageService {
     return this.updateFilms(category);
   }
 
-  getCurrentFilmForPage(page, count, category): IFilmDataShort[] {
-    return this.updateFilms(category).slice((page - 1) * count, (page - 1) * count + count);
+  getCurrentFilmForPage(page, count, category): void {
+    const films = this.updateFilms(category).slice((page - 1) * count, (page - 1) * count + count);
+    this.store.dispatch(new LoadSavedFilms(films));
   }
 
   updateFilms(category: Category): IFilmDataShort[] {
     category.data = JSON.parse(localStorage.getItem(category.key) || '[]');
     return category.data;
-  }
-
-  hasFilms(category: Category) {
-    return category.data.length > 0;
   }
 
   exist(film: IFilmDataShort, category: Category): boolean {
