@@ -10,17 +10,14 @@ interface LinkItem {
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
-
+export class HeaderComponent {
+  showNavBar = false;
   navLinks: LinkItem[] = [
-    {text: 'Главная', link: '/'},
+    {text: 'Главная', link: ''},
     {text: 'Сохраненные', link: 'saved'},
     {text: 'Просмотренные', link: 'viewed'}
   ];
-
-  constructor() { }
-
-  ngOnInit() {
+  showNavBarClickHandler() {
+    this.showNavBar = !this.showNavBar;
   }
-
 }

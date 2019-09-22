@@ -9,6 +9,13 @@ import { NotFoundComponent } from './views/not-found/not-found.component';
 import { HeaderComponent } from './components/header/header.component';
 import { LayoutComponent } from './layouts/layout/layout.component';
 import { ViewedComponent } from './views/viewed/viewed.component';
+import {FormsModule} from '@angular/forms';
+import { MainFilmsListItemComponent } from './components/films-list-item/main-films-list-item/main-films-list-item.component';
+import { FilmPageComponent } from './views/film-page/film-page.component';
+import { ViewedFilmsListItemComponent } from './components/films-list-item/viewed-films-list-item/viewed-films-list-item.component';
+import { FavoritesFilmsListItemComponent } from './components/films-list-item/favorites-films-list-item/favorites-films-list-item.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
+import {HttpClient, HttpClientModule, HttpHandler} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,13 +25,20 @@ import { ViewedComponent } from './views/viewed/viewed.component';
     NotFoundComponent,
     HeaderComponent,
     LayoutComponent,
-    ViewedComponent
+    ViewedComponent,
+    MainFilmsListItemComponent,
+    FilmPageComponent,
+    ViewedFilmsListItemComponent,
+    FavoritesFilmsListItemComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [HttpClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

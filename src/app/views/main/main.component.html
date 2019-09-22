@@ -1,1 +1,14 @@
-<p>main works!</p>
+<div class="container container-fluid">
+  <div class="d-flex">
+      <input type="text" [(ngModel)]="searchTitle" class="form-control flex-grow-1" (keyup.enter)="searchClickHandler()">
+      <button *ngIf="hasSearchTitle" type="submit" class="btn" (click)="searchClickHandler()">Найти</button>
+      <button *ngIf="!hasSearchTitle" disabled type="submit" class="btn" (click)="searchClickHandler()">Найти</button>
+  </div>
+  <small class="text-danger" *ngIf="hasSearchError" >{{searchError}}</small>
+</div>
+
+<div class="container" *ngIf="hasSearchResult">
+  <h2>Результаты поиска</h2>
+  <app-films-list-item *ngFor="let item of searchResult" [FilmItemData]="item"></app-films-list-item>
+  <app-pagination *ngIf="needPagination" [itemsCount]="filmsCount" [itemsCountOnPage]="filmsCountOnPage" [currentPage]="currentPage" (onPageChanged)="pageChangeHandler($event)" ></app-pagination>
+</div>

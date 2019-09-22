@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="row row--mg">
+    <button (click)="goBack()" class="btn btn-primary">← Вернуться назад</button>
+  </div>
+  <div *ngIf="hasFilmData; else loadBlock" class="row">
+    <div class="col-12 col-md-auto d-flex justify-content-center">
+      <img [attr.src]="filmData.poster">
+    </div>
+    <div class="col">
+      <div class="row row--mg flex-nowrap">
+        <div class="col-auto">
+          <p>Год: </p>
+          <p>Жанр: </p>
+          <p>Актеры: </p>
+        </div>
+        <div class="col-auto">
+          <p>{{filmData.year}}</p>
+          <p>{{filmData.genre}}</p>
+          <p>{{filmData.actors}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <p class="col">{{filmData.plot}}</p>
+      </div>
+      </div>
+    </div>
+</div>
+
+<ng-template *ngIf="error === ''; else errorBlock" #loadBlock>Загрузка</ng-template>
+<ng-template #errorBlock><p class="text-danger">{{error}}</p></ng-template>
