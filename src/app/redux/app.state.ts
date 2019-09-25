@@ -3,12 +3,14 @@ import {IFilmDataShort} from '../Interfaces/IFilmDataShort.interface';
 export interface AppState {
     saved: IFilmCategory;
     viewed: IFilmCategory;
-    search: {
-      query: string;
-      totalResults: number;
-      currentPage: number;
-      pageResults: IFilmDataShort[];
-    };
+    search: ISearch;
+}
+
+export interface ISearch {
+  query: string;
+  totalResultsCount: number;
+  currentPage: number;
+  pageResults: IFilmDataShort[];
 }
 
 export interface IFilmCategory {

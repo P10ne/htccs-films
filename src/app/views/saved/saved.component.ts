@@ -1,18 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LocStorageService} from '../../services/loc-storage.service';
 import {AppConfigService} from '../../services/app.config.service';
 import {IFilmDataShort} from '../../Interfaces/IFilmDataShort.interface';
 import {AppState, CategoryFields, IFilmCategory} from '../../redux/app.state';
 import {select, Store} from '@ngrx/store';
 import {selectFilmsForPage} from '../../redux/app.selector';
-import {UpdateCategoryPageAction, UpdateFilmsAction} from '../../redux/app.actions';
+import {ClearFilmsAction, UpdateCategoryPageAction, UpdateFilmsAction} from '../../redux/app.actions';
 
 @Component({
   selector: 'app-saved',
   templateUrl: './saved.component.html',
   styleUrls: ['./saved.component.scss']
 })
-export class SavedComponent implements OnInit {
+export class SavedComponent implements OnInit, OnDestroy {
   savedFilms: IFilmDataShort[];
   currentPage: number;
   filmsCount: number;
@@ -33,6 +33,7 @@ export class SavedComponent implements OnInit {
     });
     const films = this.locStorage.getAllFilms(CategoryFields.saved);
     this.store.dispatch(UpdateFilmsAction({films: films, category: CategoryFields.saved}));
+    console.log('saved init');
   }
 
   pageChangeHandler(selectedPage: number): void {
@@ -45,5 +46,9 @@ export class SavedComponent implements OnInit {
 
     const newFilms = this.locStorage.getAllFilms(CategoryFields.saved);
     this.store.dispatch(UpdateFilmsAction({films: newFilms, category: CategoryFields.saved}));
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch(ClearFilmsAction({category: CategoryFields.saved}));
   }
 }

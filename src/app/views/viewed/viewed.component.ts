@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LocStorageService} from '../../services/loc-storage.service';
 import {AppConfigService} from '../../services/app.config.service';
 import {Observable} from 'rxjs';
@@ -7,14 +7,14 @@ import {select, Store} from '@ngrx/store';
 import {} from '../../redux/app.selector';
 import {AppState, CategoryFields, IFilmCategory} from '../../redux/app.state';
 import {selectFilmsForPage} from '../../redux/app.selector';
-import {UpdateCategoryPageAction, UpdateFilmsAction} from '../../redux/app.actions';
+import {ClearFilmsAction, UpdateCategoryPageAction, UpdateFilmsAction} from '../../redux/app.actions';
 
 @Component({
   selector: 'app-viewed',
   templateUrl: './viewed.component.html',
   styleUrls: ['./viewed.component.scss']
 })
-export class ViewedComponent implements OnInit {
+export class ViewedComponent implements OnInit, OnDestroy {
   viewedFilms: IFilmDataShort[];
   currentPage: number;
   filmsCount: number;
@@ -46,6 +46,10 @@ export class ViewedComponent implements OnInit {
 
     const newFilms = this.locStorage.getAllFilms(CategoryFields.viewed);
     this.store.dispatch(UpdateFilmsAction({films: newFilms, category: CategoryFields.viewed}));
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch(ClearFilmsAction({category: CategoryFields.saved}));
   }
 
 }

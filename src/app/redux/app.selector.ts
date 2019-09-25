@@ -2,13 +2,6 @@ import {createFeatureSelector, createSelector} from '@ngrx/store';
 import {AppState} from './app.state';
 import {AppConfigService} from '../services/app.config.service';
 
-export const selectFilmsByCategory = () =>
-  createSelector(
-    // @ts-ignore
-    (state: AppState) => state.Films,
-    (categoryField, props) => categoryField[props.category]
-)
-
 export const selectFilmsForPage = () =>
   createSelector(
     // @ts-ignore
@@ -31,3 +24,9 @@ export const selectExistInCategory = () =>
     (categoryField, props) => categoryField.films.find((item) => item.imdbId === props.searchImdbId)
 )
 
+export const selectFilmsSearchPage = () =>
+  createSelector(
+    // @ts-ignore
+    (state: AppState) => state.Films,
+    (films) => films.search
+)

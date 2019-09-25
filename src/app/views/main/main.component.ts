@@ -3,6 +3,10 @@ import {FilmsLoaderService} from '../../services/films-loader.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Route, Router} from '@angular/router';
 import {IFilmDataShort} from '../../Interfaces/IFilmDataShort.interface';
+import {select, Store} from '@ngrx/store';
+import {AppState, ISearch} from '../../redux/app.state';
+import {selectFilmsSearchPage} from '../../redux/app.selector';
+import {UpdateMainPageAction} from '../../redux/app.actions';
 
 @Component({
   selector: 'app-main',
@@ -24,41 +28,23 @@ export class MainComponent {
     return this.searchError !== '';
   }
   get hasSearchResult() {
-    return this.searchResult.length > 0;
+    return this.searchResult && this.searchResult.length > 0;
   }
   get needPagination() {
     return this.filmsCount > this.filmsCountOnPage;
   }
 
-  constructor(private filmsLoader: FilmsLoaderService, private route: ActivatedRoute, private router: Router) {
-    this.querySubscription = route.queryParams.subscribe(
-      (queryParam: any) => {
-        this.searchTitle = queryParam['searchtitle'];
-        const queryPage = Number.parseInt(queryParam['page']);
-        this.currentPage = queryPage ? queryPage : 1;
-      }
-    );
-    if (this.searchTitle) {
-      this.createResults();
-    }
+  constructor(private filmsLoader: FilmsLoaderService, private store: Store<AppState>) {
+    this.store.pipe(select(selectFilmsSearchPage())).subscribe((search: ISearch) => {
+      this.searchTitle = search.query;
+      this.searchResult = search.pageResults;
+      this.currentPage = search.currentPage;
+      this.filmsCount = search.totalResultsCount;
+    });
   }
 
   searchClickHandler() {
-    this.currentPage = 1;
-    this.navigateToPage(this.currentPage);
     this.createResults();
-  }
-
-  navigateToPage(page: number) {
-    this.router.navigate(
-      [''],
-      {
-        queryParams: {
-          'searchtitle': this.searchTitle,
-          'page': page
-        }
-      }
-    );
   }
 
   createResults() {
@@ -72,19 +58,18 @@ export class MainComponent {
     this.filmsLoader.getFilmsBySearch(this.searchTitle, this.currentPage)
       .subscribe(
         data => {
-          this.searchResult = data.data;
-          this.filmsCount = data.totalResults;
+          this.store.dispatch(UpdateMainPageAction({pageResults: data.data, currentPage: this.currentPage, totalResultsCount: data.totalResults, query: this.searchTitle}));
         },
           error => {
             this.searchError = error.message;
+            this.store.dispatch(UpdateMainPageAction({pageResults: null, currentPage: 1, totalResultsCount: 0, query: ''}));
             console.error(error);
           });
 
   }
 
   pageChangeHandler(newPage: number) {
-    this.currentPage = newPage;
-    this.navigateToPage(this.currentPage);
+    this.currentPage = newPage; // !!!#################################
     this.setPageData();
   }
 }
