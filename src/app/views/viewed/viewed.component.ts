@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {LocStorageService} from '../../services/loc-storage.service';
 import {AppConfigService} from '../../services/app.config.service';
-import {LocStorageEnum} from '../../enums/LocStorage.enum';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {IFilmDataShort} from '../../Interfaces/IFilmDataShort.interface';
+import {select, Store} from '@ngrx/store';
+import {} from '../../redux/app.selector';
+import {AppState, CategoryFields, IFilmCategory} from '../../redux/app.state';
+import {selectFilmsForPage} from '../../redux/app.selector';
+import {UpdateCategoryPageAction, UpdateFilmsAction} from '../../redux/app.actions';
 
 @Component({
   selector: 'app-viewed',
@@ -11,46 +16,36 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class ViewedComponent implements OnInit {
   viewedFilms: IFilmDataShort[];
-  filmsCountOnPage = this.config.newsOnPage
-  filmsCount: number;
   currentPage: number;
-  private querySubscription;
-  get hasViewedFilms(): boolean {
-    return this.locStorage.hasFilms(this.locStorage.categories[LocStorageEnum.Viewed]);
+  filmsCount: number;
+  filmsCountOnPage = AppConfigService.newsOnPage;
+  get hasViewedFilms() {
+    return this.viewedFilms && this.viewedFilms.length > 0;
   }
-  constructor(private locStorage: LocStorageService, private config: AppConfigService, private route: ActivatedRoute, private router: Router) {
-    this.querySubscription = route.queryParams.subscribe(
-      (queryParams: any) => {
-        const queryPage = Number.parseInt(queryParams['page']);
-        this.currentPage = queryPage ? queryPage : 1;
-      }
-    );
+  constructor(private locStorage: LocStorageService, private config: AppConfigService, private store: Store<AppState>) {
+
   }
 
   ngOnInit(): void {
-    this.update();
-  }
-
-  update(): void {
-    this.viewedFilms = this.locStorage.getCurrentFilmForPage(this.currentPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageEnum.Viewed]);
-    this.filmsCount = this.locStorage.getCurrentFilms(this.locStorage.categories[LocStorageEnum.Viewed]).length;
+    this.store.pipe(select(selectFilmsForPage(), {category: CategoryFields.viewed})).subscribe((viewedFilms: IFilmCategory) => {
+      this.viewedFilms = viewedFilms.films;
+      this.currentPage = viewedFilms.currentPage;
+      this.filmsCount = viewedFilms.totalCount;
+    });
+    const films = this.locStorage.getAllFilms(CategoryFields.viewed);
+    this.store.dispatch(UpdateFilmsAction({films: films, category: CategoryFields.viewed}));
   }
 
   pageChangeHandler(selectedPage: number): void {
-    this.currentPage = selectedPage;
-    this.navigateToPage(this.currentPage);
-    this.viewedFilms = this.locStorage.getCurrentFilmForPage(this.currentPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageEnum.Viewed]);
+    console.log(`viewed: ${selectedPage}`);
+    this.store.dispatch(UpdateCategoryPageAction({page: selectedPage, category: CategoryFields.viewed}));
   }
 
-  navigateToPage(page: number) {
-    this.router.navigate(
-      ['/viewed'],
-      {
-        queryParams: {
-          'page': page
-        }
-      }
-    );
+  deleteFilmHandler(film) {
+    this.locStorage.deleteFromCategory(film, CategoryFields.viewed);
+
+    const newFilms = this.locStorage.getAllFilms(CategoryFields.viewed);
+    this.store.dispatch(UpdateFilmsAction({films: newFilms, category: CategoryFields.viewed}));
   }
 
 }

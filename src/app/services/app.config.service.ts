@@ -4,6 +4,6 @@ import {Injectable} from '@angular/core';
   providedIn: 'root'
 })
 export class AppConfigService {
-  newsOnPage = 10; // Для страниц "сохраненные" и "просмотренные"
-  imdbKey = 'a2149e33';
+  static newsOnPage = 4; // Для страниц "сохраненные" и "просмотренные"
+  static imdbKey = 'a2149e33';
 }

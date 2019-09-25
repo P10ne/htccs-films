@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {FilmsListItem} from '../films-list-item';
 import {LocStorageService} from '../../../services/loc-storage.service';
-import {LocStorageEnum} from '../../../enums/LocStorage.enum';
+import {CategoryFields} from '../../../redux/app.state';
 
 @Component({
   selector: 'app-viewed-films-list-item',
@@ -15,7 +15,7 @@ export class ViewedFilmsListItemComponent extends FilmsListItem {
   }
 
   deleteFromViewed() {
-    this.locStorage.deleteFromCategory(this.FilmItemData, this.locStorage.categories[LocStorageEnum.Viewed]);
-    this.deleteEmitter.emit();
+    this.locStorage.deleteFromCategory(this.FilmItemData, CategoryFields.viewed);
+    //this.deleteEmitter.emit();
   }
 }

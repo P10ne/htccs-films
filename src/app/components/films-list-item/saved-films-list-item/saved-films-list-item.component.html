@@ -2,6 +2,6 @@
   <div class="card-body">
     <h4 class="card-title"><a [routerLink]="['../film-page', FilmItemData.imdbId]">{{FilmItemData.title}}</a></h4>
     <p class="card-text">{{FilmItemData.year}}</p>
-    <button type="button" class="btn btn-link" (click)="deleteFromFavorites()">Удалить</button>
+    <button type="button" class="btn btn-link" (click)="deleteFromSaved(FilmItemData)">Удалить</button>
   </div>
 </div>

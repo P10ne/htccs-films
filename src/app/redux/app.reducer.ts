@@ -1,36 +1,49 @@
-import {Action} from '@ngrx/store';
-import {AddFilmSaved, AppActions, FILM_ACTIONS} from './app.actions';
-import {LocStorageService} from '../services/loc-storage.service';
+import { createReducer, on } from '@ngrx/store';
+import {UpdateCategoryPageAction, UpdateFilmsAction} from './app.actions';
+import {IFilmDataShort} from '../Interfaces/IFilmDataShort.interface';
+import {AppState} from './app.state';
 
-const initialState = {
-  saved: {
-    currentFilms: [],
-    totalCount: 0,
-    currentPage: 0
-  }
+export const initialState: AppState = {
+    saved: {
+      films: [],
+      totalCount: 0,
+      currentPage: 1
+    },
+    viewed: {
+      films: [],
+      totalCount: 0,
+      currentPage: 1
+    },
+    search: {
+      query: '',
+      totalResults: 0,
+      currentPage: 1,
+      pageResults: []
+    }
 }
-export function appReducer(state = initialState, action: AppActions) {
-  switch (action.type) {
-    case FILM_ACTIONS.ADD_FILM_SAVED:
-      return {
+
+const _appReducer = createReducer(initialState,
+  on(UpdateFilmsAction, (state, {category, films}) => {
+    return {
         ...state,
-        saved: {
-          ...state.saved,
-          currentFilms: state.saved.currentFilms.slice().push(action.payload),
-          totalCount: state.saved.totalCount + 1
+        [category]: {
+          ...state[category],
+          films,
+          totalCount: films.length
         }
+    };
+  }),
+  on(UpdateCategoryPageAction, (state, {page, category}) => {
+    return {
+      ...state,
+      [category]: {
+        ...state[category],
+        currentPage: page
       }
-      break;
-    case FILM_ACTIONS.LOAD_SAVED_FILMS:
-      return {
-        ...state,
-        saved: {
-          currentFilms: action.payload,
-          totalCount: action.payload.length,
-          currentPage: 1
-        }
-      }
-    default:
-      return state;
-  }
+    };
+  })
+);
+
+export function appReducer(state, action) {
+  return _appReducer(state, action);
 }

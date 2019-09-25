@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FilmsLoaderService} from '../../services/films-loader.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Route, Router} from '@angular/router';
+import {IFilmDataShort} from '../../Interfaces/IFilmDataShort.interface';
 
 @Component({
   selector: 'app-main',

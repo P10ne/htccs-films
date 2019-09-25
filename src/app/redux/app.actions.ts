@@ -1,18 +1,18 @@
-import {Action} from '@ngrx/store';
+import {Action, createAction, props} from '@ngrx/store';
+import {IFilmDataShort, IFilmDataShortActionProps} from '../Interfaces/IFilmDataShort.interface';
+import {CategoryFields} from './app.state';
 
-export namespace FILM_ACTIONS {
-  export const ADD_FILM_SAVED = 'ADD_FILM_SAVED';
-  export const LOAD_SAVED_FILMS = 'LOAD_SAVED_FILMS';
+export enum FilmActionNames {
+  UpdateFilmList = '[Films Item Component] UpdateFilmList',
+  UpdateCategoryPage = '[Films Page Component] UpdateCategoryPage'
 }
 
-export class AddFilmSaved implements Action {
-  readonly type = FILM_ACTIONS.ADD_FILM_SAVED;
-  constructor(public payload: IFilmDataShort) {}
-}
+export const UpdateFilmsAction = createAction(
+  FilmActionNames.UpdateFilmList,
+  props<{films: IFilmDataShort[], category: CategoryFields}>()
+)
 
-export class LoadSavedFilms implements Action {
-  readonly type = FILM_ACTIONS.LOAD_SAVED_FILMS;
-  constructor(public payload: IFilmDataShort[]) {}
-}
-
-export type AppActions = AddFilmSaved | LoadSavedFilms;
+export const UpdateCategoryPageAction = createAction(
+  FilmActionNames.UpdateCategoryPage,
+  props<{page: number, category: CategoryFields}>()
+)

@@ -1,11 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LocStorageService} from '../../services/loc-storage.service';
 import {AppConfigService} from '../../services/app.config.service';
-import {LocStorageEnum} from '../../enums/LocStorage.enum';
-import {Subscription} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Store} from '@ngrx/store';
-import {MyFilms} from '../../redux/app.state';
+import {IFilmDataShort} from '../../Interfaces/IFilmDataShort.interface';
+import {AppState, CategoryFields, IFilmCategory} from '../../redux/app.state';
+import {select, Store} from '@ngrx/store';
+import {selectFilmsForPage} from '../../redux/app.selector';
+import {UpdateCategoryPageAction, UpdateFilmsAction} from '../../redux/app.actions';
 
 @Component({
   selector: 'app-saved',
@@ -13,33 +13,37 @@ import {MyFilms} from '../../redux/app.state';
   styleUrls: ['./saved.component.scss']
 })
 export class SavedComponent implements OnInit {
-  favoritesFilms: IFilmDataShort[];
+  savedFilms: IFilmDataShort[];
   currentPage: number;
   filmsCount: number;
-  filmsCountOnPage = this.config.newsOnPage;
-  get hasFavoritesFilms(): boolean {
-    return this.favoritesFilms && this.favoritesFilms.length > 0;
+  filmsCountOnPage = AppConfigService.newsOnPage;
+
+  get hasSavedFilms() {
+    return this.savedFilms && this.savedFilms.length > 0;
   }
   constructor(private locStorage: LocStorageService,
-              private config: AppConfigService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private store: Store<MyFilms>) {}
-
-  ngOnInit(): void {
-    this.store.select('appPage').subscribe(({saved}) => {
-      this.favoritesFilms = saved.currentFilms;
-      this.currentPage = saved.currentPage;
-      this.filmsCount = saved.totalCount;
-    });
-    this.loadFilms();
+              private store: Store<AppState>) {
   }
 
-  loadFilms() {
-    this.locStorage.getCurrentFilmForPage(this.currentPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageEnum.Favorites]);
+  ngOnInit(): void {
+    this.store.pipe(select(selectFilmsForPage(), {category: CategoryFields.saved})).subscribe((savedFilms: IFilmCategory) => {
+      this.savedFilms = savedFilms.films;
+      this.currentPage = savedFilms.currentPage;
+      this.filmsCount = savedFilms.totalCount;
+    });
+    const films = this.locStorage.getAllFilms(CategoryFields.saved);
+    this.store.dispatch(UpdateFilmsAction({films: films, category: CategoryFields.saved}));
   }
 
   pageChangeHandler(selectedPage: number): void {
     console.log(`saved: ${selectedPage}`);
+    this.store.dispatch(UpdateCategoryPageAction({page: selectedPage, category: CategoryFields.saved}));
+  }
+
+  deleteFilmHandler(film) {
+    this.locStorage.deleteFromCategory(film, CategoryFields.saved);
+
+    const newFilms = this.locStorage.getAllFilms(CategoryFields.saved);
+    this.store.dispatch(UpdateFilmsAction({films: newFilms, category: CategoryFields.saved}));
   }
 }
