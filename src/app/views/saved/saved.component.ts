@@ -21,6 +21,9 @@ export class SavedComponent implements OnInit, OnDestroy {
   get hasSavedFilms() {
     return this.savedFilms && this.savedFilms.length > 0;
   }
+  get needPagination() {
+    return this.filmsCount > this.filmsCountOnPage;
+  }
   constructor(private locStorage: LocStorageService,
               private store: Store<AppState>) {
   }
@@ -33,11 +36,9 @@ export class SavedComponent implements OnInit, OnDestroy {
     });
     const films = this.locStorage.getAllFilms(CategoryFields.saved);
     this.store.dispatch(UpdateFilmsAction({films: films, category: CategoryFields.saved}));
-    console.log('saved init');
   }
 
   pageChangeHandler(selectedPage: number): void {
-    console.log(`saved: ${selectedPage}`);
     this.store.dispatch(UpdateCategoryPageAction({page: selectedPage, category: CategoryFields.saved}));
   }
 

@@ -28,12 +28,10 @@ export class PaginationComponent implements OnInit {
   }
 
   update(newPage: number): void {
-    // Отображаются по две страницы слева и справа от newPage
     this.maxPageNumber = Math.ceil(this.itemsCount / this.itemsCountOnPage);
     this.startPage = newPage > 3 ? newPage - 2 : 1;
     this.endPage = newPage > this.maxPageNumber - 3 ? this.maxPageNumber : newPage + 2;
 
-    //this.currentPage = newPage;
     this.visiblePages = [];
     for (let i = this.startPage; i <= this.endPage; i++) {
       this.visiblePages.push(i);

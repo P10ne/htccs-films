@@ -22,6 +22,9 @@ export class ViewedComponent implements OnInit, OnDestroy {
   get hasViewedFilms() {
     return this.viewedFilms && this.viewedFilms.length > 0;
   }
+  get needPagination() {
+    return this.filmsCount > this.filmsCountOnPage;
+  }
   constructor(private locStorage: LocStorageService, private config: AppConfigService, private store: Store<AppState>) {
 
   }

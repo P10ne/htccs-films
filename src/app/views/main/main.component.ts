@@ -50,15 +50,15 @@ export class MainComponent {
   createResults() {
     this.searchError = '';
     if (this.searchTitle.trim().length > 0) {
-      this.setPageData();
+      this.setPageData(1);
     }
   }
 
-  setPageData(): void {
-    this.filmsLoader.getFilmsBySearch(this.searchTitle, this.currentPage)
+  setPageData(page: number): void {
+    this.filmsLoader.getFilmsBySearch(this.searchTitle, page)
       .subscribe(
         data => {
-          this.store.dispatch(UpdateMainPageAction({pageResults: data.data, currentPage: this.currentPage, totalResultsCount: data.totalResults, query: this.searchTitle}));
+          this.store.dispatch(UpdateMainPageAction({pageResults: data.data, currentPage: page, totalResultsCount: data.totalResults, query: this.searchTitle}));
         },
           error => {
             this.searchError = error.message;
@@ -69,7 +69,6 @@ export class MainComponent {
   }
 
   pageChangeHandler(newPage: number) {
-    this.currentPage = newPage; // !!!#################################
-    this.setPageData();
+    this.setPageData(newPage);
   }
 }
