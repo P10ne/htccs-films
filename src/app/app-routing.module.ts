@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {MainComponent} from './views/main/main.component';
-import {SavedComponent} from './views/saved/saved.component';
+import {SavedComponent} from './views/categories/saved/saved.component';
 import {NotFoundComponent} from './views/not-found/not-found.component';
-import {ViewedComponent} from './views/viewed/viewed.component';
+import {ViewedComponent} from './views/categories/viewed/viewed.component';
 import {FilmPageComponent} from './views/film-page/film-page.component';
 
 
