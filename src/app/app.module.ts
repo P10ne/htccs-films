@@ -18,7 +18,7 @@ import { SavedFilmsListItemComponent } from './components/films-list-item/saved-
 import { PaginationComponent } from './components/pagination/pagination.component';
 import {HttpClient, HttpClientModule, HttpHandler} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
-import {appReducer} from './redux/app.reducer';
+import {appReducer} from './store/app.reducer';
 
 @NgModule({
   declarations: [

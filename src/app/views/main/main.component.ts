@@ -4,9 +4,9 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute, Route, Router} from '@angular/router';
 import {IFilmDataShort} from '../../Interfaces/IFilmDataShort.interface';
 import {select, Store} from '@ngrx/store';
-import {AppState, ISearch} from '../../redux/app.state';
-import {selectFilmsSearchPage} from '../../redux/app.selector';
-import {UpdateMainPageAction} from '../../redux/app.actions';
+import {AppState, ISearch} from '../../store/app.state';
+import {selectFilmsSearchPage} from '../../store/app.selector';
+import {UpdateMainPageAction} from '../../store/app.actions';
 
 @Component({
   selector: 'app-main',

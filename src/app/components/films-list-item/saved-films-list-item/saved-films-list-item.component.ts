@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {FilmsListItem} from '../films-list-item';
 import {LocStorageService} from '../../../services/loc-storage.service';
-import {CategoryFields} from '../../../redux/app.state';
+import {CategoryFields} from '../../../store/app.state';
 import {IFilmDataShort} from '../../../Interfaces/IFilmDataShort.interface';
 
 @Component({

@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {LocStorageService} from '../../../services/loc-storage.service';
 import {FilmsListItem} from '../films-list-item';
-import {AppState, CategoryFields} from '../../../redux/app.state';
+import {AppState, CategoryFields} from '../../../store/app.state';
 import {select, Store} from '@ngrx/store';
-import {selectExistInCategory} from '../../../redux/app.selector';
+import {selectExistInCategory} from '../../../store/app.selector';
 
 @Component({
   selector: 'app-films-list-item',

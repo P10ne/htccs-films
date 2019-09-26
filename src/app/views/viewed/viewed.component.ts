@@ -4,10 +4,10 @@ import {AppConfigService} from '../../services/app.config.service';
 import {Observable} from 'rxjs';
 import {IFilmDataShort} from '../../Interfaces/IFilmDataShort.interface';
 import {select, Store} from '@ngrx/store';
-import {} from '../../redux/app.selector';
-import {AppState, CategoryFields, IFilmCategory} from '../../redux/app.state';
-import {selectFilmsForPage} from '../../redux/app.selector';
-import {ClearFilmsAction, UpdateCategoryPageAction, UpdateFilmsAction} from '../../redux/app.actions';
+import {} from '../../store/app.selector';
+import {AppState, CategoryFields, IFilmCategory} from '../../store/app.state';
+import {selectFilmsForPage} from '../../store/app.selector';
+import {ClearFilmsAction, UpdateCategoryPageAction, UpdateFilmsAction} from '../../store/app.actions';
 
 @Component({
   selector: 'app-viewed',

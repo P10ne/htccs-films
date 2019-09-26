@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {IFilmDataShort} from '../Interfaces/IFilmDataShort.interface';
-import {AppState, CategoryFields} from '../redux/app.state';
-import {UpdateFilmsAction} from '../redux/app.actions';
+import {AppState, CategoryFields} from '../store/app.state';
+import {UpdateFilmsAction} from '../store/app.actions';
 import {AppConfigService} from './app.config.service';
 
 @Injectable({

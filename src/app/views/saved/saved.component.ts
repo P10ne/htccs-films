@@ -2,10 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LocStorageService} from '../../services/loc-storage.service';
 import {AppConfigService} from '../../services/app.config.service';
 import {IFilmDataShort} from '../../Interfaces/IFilmDataShort.interface';
-import {AppState, CategoryFields, IFilmCategory} from '../../redux/app.state';
+import {AppState, CategoryFields, IFilmCategory} from '../../store/app.state';
 import {select, Store} from '@ngrx/store';
-import {selectFilmsForPage} from '../../redux/app.selector';
-import {ClearFilmsAction, UpdateCategoryPageAction, UpdateFilmsAction} from '../../redux/app.actions';
+import {selectFilmsForPage} from '../../store/app.selector';
+import {ClearFilmsAction, UpdateCategoryPageAction, UpdateFilmsAction} from '../../store/app.actions';
 
 @Component({
   selector: 'app-saved',
