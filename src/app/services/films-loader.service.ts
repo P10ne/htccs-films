@@ -9,8 +9,8 @@ import {PlotTypeEnum} from '../enums/PlotType.enum';
   providedIn: 'root'
 })
 export class FilmsLoaderService {
-  url = `http://www.omdbapi.com/?apikey=${this.config.imdbKey}`;
-  constructor(private http: HttpClient, private config: AppConfigService) { }
+  url = `http://www.omdbapi.com/?apikey=${AppConfigService.imdbKey}`;
+  constructor(private http: HttpClient) { }
 
   getFilmsBySearch(title: string, page: number = 1): Observable<any> {
     const url = `${this.url}&s=${title}&page=${page}`;

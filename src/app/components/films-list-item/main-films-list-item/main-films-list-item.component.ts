@@ -1,7 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {LocStorageService} from '../../../services/loc-storage.service';
 import {FilmsListItem} from '../films-list-item';
-import {LocStorageEnum} from '../../../enums/LocStorage.enum';
+import {AppState, CategoryFields} from '../../../store/app.state';
+import {select, Store} from '@ngrx/store';
+import {selectExistInCategory} from '../../../store/app.selector';
 
 @Component({
   selector: 'app-films-list-item',
@@ -10,24 +12,25 @@ import {LocStorageEnum} from '../../../enums/LocStorage.enum';
   providers: [LocStorageService]
 })
 export class MainFilmsListItemComponent extends FilmsListItem {
-
-  get existInViewed() {
-    return this.locStorage.exist(this.FilmItemData, this.locStorage.categories[LocStorageEnum.Viewed]);
-  }
-
-  get existInFavorites() {
-    return this.locStorage.exist(this.FilmItemData, this.locStorage.categories[LocStorageEnum.Favorites]);
-  }
-
-  constructor(private locStorage: LocStorageService) {
+  constructor(private locStorage: LocStorageService, private store: Store<AppState>) {
     super();
   }
 
-  addToViewed() {
-    this.locStorage.addToCategory(this.FilmItemData, this.locStorage.categories[LocStorageEnum.Viewed]);
+  get existInViewed() {
+    return this.store.pipe(select(selectExistInCategory(), {category: CategoryFields.viewed, searchImdbId: this.FilmItemData.imdbId}));
   }
 
-  addToFavorites() {
-    this.locStorage.addToCategory(this.FilmItemData, this.locStorage.categories[LocStorageEnum.Favorites]);
+  get existInSaved() {
+    return this.store.pipe(select(selectExistInCategory(), {category: CategoryFields.saved, searchImdbId: this.FilmItemData.imdbId}));
+  }
+
+
+
+  addToViewed() {
+    this.locStorage.addToCategory(this.FilmItemData, CategoryFields.viewed);
+  }
+
+  addToSaved() {
+    this.locStorage.addToCategory(this.FilmItemData, CategoryFields.saved);
   }
 }

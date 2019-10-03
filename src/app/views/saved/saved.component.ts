@@ -1,58 +1,55 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LocStorageService} from '../../services/loc-storage.service';
-import {PaginationComponent} from '../../components/pagination/pagination.component';
 import {AppConfigService} from '../../services/app.config.service';
-import {LocStorageEnum} from '../../enums/LocStorage.enum';
-import {Subscription} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
+import {IFilmDataShort} from '../../Interfaces/IFilmDataShort.interface';
+import {AppState, CategoryFields, IFilmCategory} from '../../store/app.state';
+import {select, Store} from '@ngrx/store';
+import {selectFilmsForPage} from '../../store/app.selector';
+import {ClearFilmsAction, UpdateCategoryPageAction, UpdateFilmsAction} from '../../store/app.actions';
 
 @Component({
   selector: 'app-saved',
   templateUrl: './saved.component.html',
   styleUrls: ['./saved.component.scss']
 })
-export class SavedComponent implements OnInit {
-  favoritesFilms: IFilmDataShort[];
-  filmsCountOnPage = this.config.newsOnPage;
-  filmsCount: number;
+export class SavedComponent implements OnInit, OnDestroy {
+  savedFilms: IFilmDataShort[];
   currentPage: number;
-  private querySubscription: Subscription;
-  get hasFavoritesFilms(): boolean {
-    return this.locStorage.hasFilms(this.locStorage.categories[LocStorageEnum.Favorites]);
+  filmsCount: number;
+  filmsCountOnPage = AppConfigService.newsOnPage;
+
+  get hasSavedFilms() {
+    return this.savedFilms && this.savedFilms.length > 0;
   }
-  constructor(private locStorage: LocStorageService, private config: AppConfigService, private route: ActivatedRoute, private router: Router) {
-    this.querySubscription = route.queryParams.subscribe(
-      (queryParams: any) => {
-        const queryPage = Number.parseInt(queryParams['page']);
-        this.currentPage = queryPage ? queryPage : 1;
-      }
-    );
+  get needPagination() {
+    return this.filmsCount > this.filmsCountOnPage;
+  }
+  constructor(private locStorage: LocStorageService,
+              private store: Store<AppState>) {
   }
 
   ngOnInit(): void {
-    this.update();
-  }
-
-  update(): void {
-    this.favoritesFilms = this.locStorage.getCurrentFilmForPage(this.currentPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageEnum.Favorites]);
-    this.filmsCount = this.locStorage.getCurrentFilms(this.locStorage.categories[LocStorageEnum.Favorites]).length;
+    this.store.pipe(select(selectFilmsForPage(), {category: CategoryFields.saved})).subscribe((savedFilms: IFilmCategory) => {
+      this.savedFilms = savedFilms.films;
+      this.currentPage = savedFilms.currentPage;
+      this.filmsCount = savedFilms.totalCount;
+    });
+    const films = this.locStorage.getAllFilms(CategoryFields.saved);
+    this.store.dispatch(UpdateFilmsAction({films: films, category: CategoryFields.saved}));
   }
 
   pageChangeHandler(selectedPage: number): void {
-    console.log(`saved: ${selectedPage}`);
-    this.currentPage = selectedPage;
-    this.navigateToPage(this.currentPage);
-    this.favoritesFilms = this.locStorage.getCurrentFilmForPage(this.currentPage, this.filmsCountOnPage, this.locStorage.categories[LocStorageEnum.Favorites]);
+    this.store.dispatch(UpdateCategoryPageAction({page: selectedPage, category: CategoryFields.saved}));
   }
 
-  navigateToPage(page: number) {
-    this.router.navigate(
-      ['/saved'],
-      {
-        queryParams: {
-          'page': page
-        }
-      }
-    );
+  deleteFilmHandler(film) {
+    this.locStorage.deleteFromCategory(film, CategoryFields.saved);
+
+    const newFilms = this.locStorage.getAllFilms(CategoryFields.saved);
+    this.store.dispatch(UpdateFilmsAction({films: newFilms, category: CategoryFields.saved}));
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch(ClearFilmsAction({category: CategoryFields.saved}));
   }
 }
